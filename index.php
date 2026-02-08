@@ -1,3 +1,11 @@
+<?php
+session_start();
+require "config.php";
+
+// Controllo login opzionale
+$logged_in = isset($_SESSION["user_id"]);
+$gamertag = $logged_in ? $_SESSION["gamertag"] : null;
+?>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -8,29 +16,80 @@
 </head>
 <body>
 
-    <!-- NAVBAR -->
+<header>
     <nav class="navbar">
-        <div class="logo">
-            <img src="C:\xampp\htdocs\Royal_Tracker\Logo.jpg" alt="Clash Royale Hub" height="50">
-        </div>
+        <div class="logo">Clash Royale Hub</div>
         <ul class="nav-links">
             <li><a href="#">Home</a></li>
-            <li><a href="#">Decks</a></li>
-            <li><a href="#">Challenge</a></li>
-            <li><a href="#">Chat</a></li>
+            <li><a href="#">Deck</a></li>
+            <li><a href="#">Challenges</a></li>
+            <li><a href="#">Community</a></li>
             <li><a href="#">Video</a></li>
         </ul>
-        <div class="login-btn">
-            <a href="#">Login</a>
+        <div class="user-gamertag">
+            <?php if($logged_in): ?>
+                Benvenuto, <?php echo $gamertag; ?>
+            <?php else: ?>
+                <a href="login.php" style="color: #f5b700;">Accedi</a>
+            <?php endif; ?>
         </div>
     </nav>
+</header>
 
-    <!-- HERO / HEADER -->
-    <header class="hero">
-        <h1>Benvenuto su Clash Royale Hub</h1>
-        <p>Scopri deck, challenge e video in tempo reale!</p>
-        <a href="#" class="cta-btn">Inizia Ora</a>
-    </header>
+<main>
+    <section class="hero">
+        <h1>Benvenuto nell’Arena!</h1>
+        <p>Scopri deck, sfide e video ufficiali</p>
+    </section>
+
+    <section class="deck-section">
+        <h2>Deck più usati</h2>
+        <div class="cards-container">
+            <div class="card">Deck 1</div>
+            <div class="card">Deck 2</div>
+            <div class="card">Deck 3</div>
+        </div>
+    </section>
+
+    <section class="challenge-section">
+        <h2>Challenge del giorno</h2>
+        <?php if($logged_in): ?>
+            <div class="challenge-box">
+                Sfida: Vinci 3 partite con Goblin  
+                <button>Partecipa</button>
+            </div>
+        <?php else: ?>
+            <div class="challenge-box">
+                Devi <a href="login.php">accedere</a> per partecipare alle sfide.
+            </div>
+        <?php endif; ?>
+    </section>
+
+    <section class="community-section">
+        <h2>Commenti della Community</h2>
+        <?php if($logged_in): ?>
+            <div class="comments-box">
+                <p><b>Player1:</b> Grande deck!</p>
+                <p><b>Player2:</b> Consiglio di usare arcieri!</p>
+            </div>
+        <?php else: ?>
+            <div class="comments-box">
+                Devi <a href="login.php">accedere</a> per vedere i commenti.
+            </div>
+        <?php endif; ?>
+    </section>
+
+    <section class="video-section">
+        <h2>Video / Live</h2>
+        <div class="video-box">
+            <iframe width="300" height="170" src="https://www.youtube.com/embed/example" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>Non affiliato ufficialmente a Supercell</p>
+</footer>
 
 </body>
 </html>
