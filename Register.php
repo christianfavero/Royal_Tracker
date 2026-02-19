@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once "../config.php";
+require "config.php";
 
 // Connessione database
-$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+$conn = new mysqli($host, $user, $pass, $db);
 
 if ($conn->connect_error) {
     die("Errore connessione: " . $conn->connect_error);
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
 
         // Controlla se username esiste già
-        $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+        $stmt = $conn->prepare("SELECT id_user FROM users WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $stmt->store_result();
@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            $insert = $conn->prepare("INSERT INTO users (username, password, gamertag) VALUES (?, ?, ?)");
+            $insert = $conn->prepare("INSERT INTO users (username, password_hash, player_tag) VALUES (?, ?, ?)");
             $insert->bind_param("sss", $username, $hashedPassword, $gamertag);
 
             if ($insert->execute()) {
@@ -51,37 +51,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Registrazione</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrazione - Royal Tracker</title>
+    <!-- Link al CSS principale -->
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="auth-page">
+<body class="login-page"> <!-- usa la classe login-page per centrare il box -->
 
-<div class="auth-container">
-    <div class="auth-box">
-        <h2>Crea Account</h2>
+<!-- Navbar (stessa grafica home) -->
+<nav class="navbar">
+    <div class="logo"><a href="index.php">Royal Tracker</a></div>
+    <ul class="nav-links">
+        <li><a href="index.php">Home</a></li>
+        <li><a href="decks.php">Decks</a></li>
+        <li><a href="login.php">Accedi</a></li>
+    </ul>
+</nav>
 
-        <?php if ($error): ?>
-            <div class="error-msg"><?php echo $error; ?></div>
-        <?php endif; ?>
+<!-- Box centrale -->
+<div class="login-card">
+    <h2>Crea Account</h2>
+    <p class="subtitle">Inserisci i tuoi dati per registrarti</p>
 
-        <?php if ($success): ?>
-            <div class="success-msg"><?php echo $success; ?></div>
-        <?php endif; ?>
+    <?php if ($error): ?>
+        <div class="error-msg"><?php echo $error; ?></div>
+    <?php endif; ?>
 
-        <form method="POST">
+    <?php if ($success): ?>
+        <div class="success-msg"><?php echo $success; ?></div>
+    <?php endif; ?>
+
+    <form method="POST">
+        <div class="input-group">
             <input type="text" name="username" placeholder="Username" required>
+        </div>
+        <div class="input-group">
             <input type="password" name="password" placeholder="Password" required>
+        </div>
+        <div class="input-group">
             <input type="text" name="gamertag" placeholder="GamerTag (#ABC123)" required>
+        </div>
+        <button type="submit" class="login-btn">Registrati</button>
+    </form>
 
-            <button type="submit">Registrati</button>
-        </form>
-
-        <p class="auth-link">
-            Hai già un account?
-            <a href="login.php">Accedi</a>
-        </p>
-    </div>
+    <p class="auth-link">
+        Hai già un account? <a href="login.php">Accedi</a>
+    </p>
 </div>
 
 </body>
 </html>
+

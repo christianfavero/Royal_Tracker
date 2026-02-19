@@ -1,95 +1,91 @@
 <?php
 session_start();
-require "config.php";
-
-// Controllo login opzionale
-$logged_in = isset($_SESSION["user_id"]);
-$gamertag = $logged_in ? $_SESSION["gamertag"] : null;
+require "config.php"; // Include DB e chiave API
 ?>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clash Royale Hub</title>
+    <title>Royal Tracker - Home</title>
+    <!-- Link corretto al CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
+    <!-- NAVBAR -->
     <nav class="navbar">
-        <div class="logo">Clash Royale Hub</div>
+        <div class="logo">
+            <a href="index.php">Royal Tracker</a>
+        </div>
+
         <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Deck</a></li>
-            <li><a href="#">Challenges</a></li>
-            <li><a href="#">Community</a></li>
-            <li><a href="#">Video</a></li>
+            <li><a href="index.php">Home</a></li>
+            <li><a href="decks.php">Decks</a></li>
+            <li><a href="challenges.php" class="requires-login">Challenges</a></li>
+            <li><a href="community.php" class="requires-login">Community</a></li>
+            <li><a href="videos.php" class="requires-login">Video</a></li>
         </ul>
-        <div class="user-gamertag">
-            <?php if($logged_in): ?>
-                Benvenuto, <?php echo $gamertag; ?>
+
+        <ul class="nav-links">
+            <?php if(isset($_SESSION["user_id"])): ?>
+                <li><a href="dashboard.php">Dashboard</a></li>
+                <li><a href="logout.php">Logout</a></li>
             <?php else: ?>
-                <a href="login.php" style="color: #f5b700;">Accedi</a>
+                <li><a href="login.php">Accedi</a></li>
+                <li><a href="register.php">Registrati</a></li>
             <?php endif; ?>
-        </div>
+        </ul>
     </nav>
-</header>
 
-<main>
-    <section class="hero">
-        <h1>Benvenuto nell’Arena!</h1>
-        <p>Scopri deck, sfide e video ufficiali</p>
-    </section>
-
-    <section class="deck-section">
-        <h2>Deck più usati</h2>
-        <div class="cards-container">
-            <div class="card">Deck 1</div>
-            <div class="card">Deck 2</div>
-            <div class="card">Deck 3</div>
-        </div>
-    </section>
-
-    <section class="challenge-section">
-        <h2>Challenge del giorno</h2>
-        <?php if($logged_in): ?>
-            <div class="challenge-box">
-                Sfida: Vinci 3 partite con Goblin  
-                <button>Partecipa</button>
-            </div>
-        <?php else: ?>
-            <div class="challenge-box">
-                Devi <a href="login.php">accedere</a> per partecipare alle sfide.
-            </div>
+    <!-- HERO / BENVENUTO -->
+    <header class="hero">
+        <h1>Benvenuto su Royal Tracker!</h1>
+        <p>Scopri i deck più forti, partecipa alle sfide, interagisci con la community e guarda video dei migliori player.</p>
+        <?php if(!isset($_SESSION["user_id"])): ?>
+            <a href="register.php" class="hero-btn">Inizia ora</a>
         <?php endif; ?>
-    </section>
+    </header>
 
-    <section class="community-section">
-        <h2>Commenti della Community</h2>
-        <?php if($logged_in): ?>
-            <div class="comments-box">
-                <p><b>Player1:</b> Grande deck!</p>
-                <p><b>Player2:</b> Consiglio di usare arcieri!</p>
-            </div>
-        <?php else: ?>
-            <div class="comments-box">
-                Devi <a href="login.php">accedere</a> per vedere i commenti.
-            </div>
-        <?php endif; ?>
-    </section>
+    <!-- SEZIONE HOME CARDS -->
+    <main class="home-sections">
+        <section class="section">
+            <h2>Decks Popolari</h2>
+            <p>Consulta i deck più utilizzati e i loro win rate tramite l'API di Clash Royale.</p>
+            <a href="decks.php" class="btn">Vedi Decks</a>
+        </section>
 
-    <section class="video-section">
-        <h2>Video / Live</h2>
-        <div class="video-box">
-            <iframe width="300" height="170" src="https://www.youtube.com/embed/example" frameborder="0" allowfullscreen></iframe>
-        </div>
-    </section>
-</main>
+        <section class="section">
+            <h2>Challenges</h2>
+            <p>Partecipa alle sfide e accumula punti! Richiede accesso.</p>
+            <a href="challenges.php" class="btn">Vai alle Challenges</a>
+        </section>
 
-<footer>
-    <p>Non affiliato ufficialmente a Supercell</p>
-</footer>
+        <section class="section">
+            <h2>Community</h2>
+            <p>Commenti, feedback e interazione tra player. Richiede accesso.</p>
+            <a href="community.php" class="btn">Entra nella Community</a>
+        </section>
+
+        <section class="section">
+            <h2>Video & Live</h2>
+            <p>Guarda dirette e video dei canali ufficiali di Clash Royale. Richiede accesso.</p>
+            <a href="videos.php" class="btn">Guarda Video</a>
+        </section>
+    </main>
+
+    <!-- SCRIPT PER AVVISARE UTENTI NON LOGGATI -->
+    <script>
+        document.querySelectorAll('.requires-login').forEach(link => {
+            link.addEventListener('click', function(e){
+                <?php if(!isset($_SESSION["user_id"])): ?>
+                    e.preventDefault();
+                    alert("Devi accedere per usare questa sezione!");
+                <?php endif; ?>
+            });
+        });
+    </script>
 
 </body>
 </html>

@@ -12,9 +12,7 @@ body {
     color: #333;
 }
 
-/* =================== LOGIN =================== */
-
-/* Sfondo centrato login */
+/* =================== LOGIN / REGISTRAZIONE =================== */
 body.login-page {
     display: flex;
     justify-content: center;
@@ -23,9 +21,8 @@ body.login-page {
     background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
-/* Box login */
-.login-card {
-    background: #1c1f26; /* scuro come la navbar della home */
+.auth-card {
+    background: #1c1f26; /* scuro come la navbar */
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
@@ -35,20 +32,18 @@ body.login-page {
     color: white;
 }
 
-/* Titolo e sottotitolo */
-.login-card h2 {
+.auth-card h2 {
     margin-bottom: 10px;
     color: #f5b700;
 }
 
-.login-card .subtitle {
+.auth-card .subtitle {
     font-size: 14px;
     color: #ccc;
     margin-bottom: 25px;
 }
 
-/* Input */
-.input-group input {
+.auth-card input {
     width: 100%;
     padding: 12px;
     border: 1px solid #555;
@@ -60,12 +55,11 @@ body.login-page {
     transition: border-color 0.3s;
 }
 
-.input-group input:focus {
+.auth-card input:focus {
     border-color: #f5b700;
 }
 
-/* Bottone */
-.login-btn {
+.auth-card button {
     width: 100%;
     padding: 12px;
     background-color: #f5b700;
@@ -75,12 +69,24 @@ body.login-page {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    transition:  0.3s, transform 0.
+    transition:  0.3s;
 }
 
-/* =================== HOME =================== */
+.auth-card button:hover {
+    background-color: #e0a600;
+}
 
-/* Navbar */
+.error-msg {
+    color: #ff4d4d;
+    margin-bottom: 15px;
+}
+
+.success-msg {
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+/* =================== NAVBAR =================== */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -88,18 +94,20 @@ body.login-page {
     padding: 15px 30px;
     background-color: #1c1f26;
     color: white;
+    border-radius: 0 0 10px 10px;
 }
 
 .navbar .logo {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
     color: #f5b700;
 }
 
 .navbar .nav-links {
-    list-style: none;
     display: flex;
     gap: 20px;
+    list-style: none;
+    align-items: center;
 }
 
 .navbar .nav-links li a {
@@ -117,16 +125,16 @@ body.login-page {
     font-size: 14px;
 }
 
-/* Hero */
+/* =================== HERO =================== */
 .hero {
     text-align: center;
-    padding: 40px 20px;
+    padding: 60px 20px;
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
 }
 
 .hero h1 {
-    font-size: 32px;
+    font-size: 36px;
     margin-bottom: 10px;
 }
 
@@ -134,7 +142,7 @@ body.login-page {
     font-size: 16px;
 }
 
-/* Sezioni principali */
+/* =================== SEZIONI PRINCIPALI =================== */
 main section {
     padding: 30px 20px;
     max-width: 1200px;
@@ -180,7 +188,7 @@ main section h2 {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition:  0.3s;
+    transition: 0.3s;
 }
 
 .challenge-box button:hover {

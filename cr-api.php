@@ -2,31 +2,30 @@
 
 class ClashRoyaleAPI {
 
-    private $apiKey;
-    private $baseUrl = "https://api.clashroyale.com/v1/";
+    private string $apiKey;
+    private string $baseUrl = "https://api.clashroyale.com/v1/";
 
-    // Costruttore: riceve la API key
-    public function __construct($key) {
+    public function __construct(string $key) {
         $this->apiKey = $key;
     }
 
-    // Metodo privato generico per fare richieste
-    private function request($endpoint) {
+    private function request(string $endpoint): array {
 
         $url = $this->baseUrl . $endpoint;
 
-        $ch = curl_init();
+        $ch = curl_init($url);
 
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Accept: application/json",
-            "Authorization: Bearer " . $this->apiKey
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => [
+                "Accept: application/json",
+                "Authorization: Bearer " . $this->apiKey
+            ]
         ]);
 
         $response = curl_exec($ch);
 
-        if (curl_errno($ch)) {
+        if ($response === false) {
             return [
                 "error" => true,
                 "message" => curl_error($ch)
@@ -35,32 +34,34 @@ class ClashRoyaleAPI {
 
         curl_close($ch);
 
-        return json_decode($response, true);
+        $data = json_decode($response, true);
+
+        if (!is_array($data)) {
+            return [
+                "error" => true,
+                "message" => "Risposta non valida dall'API"
+            ];
+        }
+
+        // Se l'API restituisce errore
+        if (isset($data['reason'])) {
+            return [
+                "error" => true,
+                "message" => $data['reason']
+            ];
+        }
+
+        return $data;
     }
 
-    // =========================
-    // METODI PUBBLICI UTILIZZABILI
-    // =========================
+    public function getPlayer(string $gamertag): array {
 
-    // Ottiene dati giocatore
-    public function getPlayer($tag) {
-        $encodedTag = urlencode($tag);
+        // Rimuove eventuale #
+        $gamertag = ltrim($gamertag, '#');
+
+        // URL encode obbligatorio
+        $encodedTag = urlencode("#" . $gamertag);
+
         return $this->request("players/" . $encodedTag);
-    }
-
-    // Ottiene info clan
-    public function getClan($tag) {
-        $encodedTag = urlencode($tag);
-        return $this->request("clans/" . $encodedTag);
-    }
-
-    // Ottiene lista carte
-    public function getCards() {
-        return $this->request("cards");
-    }
-
-    // Ottiene tornei pubblici
-    public function getTournaments() {
-        return $this->request("tournaments");
     }
 }
