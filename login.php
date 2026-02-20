@@ -43,9 +43,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body class="login-page">
 
 <div class="login-card">
+    <div class="auth-card"> <div class="logo-container"></div>
     <h2>Entra nell’Arena</h2>
     <p class="subtitle">Inserisci il tuo Gamer Tag per iniziare</p>
 
+        <ul class="nav-links">
+            <li><a href="index.php">Home</a></li>
+            <li><a href="decks.php">Decks</a></li>
+               </ul>
+               
     <?php if ($error): ?>
         <div class="error"><?php echo $error; ?></div>
     <?php endif; ?>

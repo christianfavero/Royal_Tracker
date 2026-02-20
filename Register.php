@@ -2,6 +2,7 @@
 session_start();
 require "config.php";
 
+
 // Connessione database
 $conn = new mysqli($host, $user, $pass, $db);
 
@@ -53,52 +54,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrazione - Royal Tracker</title>
-    <!-- Link al CSS principale -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="login-page"> <!-- usa la classe login-page per centrare il box -->
+<body>
 
-<!-- Navbar (stessa grafica home) -->
-<nav class="navbar">
-    <div class="logo"><a href="index.php">Royal Tracker</a></div>
-    <ul class="nav-links">
-        <li><a href="index.php">Home</a></li>
-        <li><a href="decks.php">Decks</a></li>
-        <li><a href="login.php">Accedi</a></li>
-    </ul>
-</nav>
+    <nav class="navbar">
+        <div class="logo"><a href="index.php">Royal Tracker</a></div>
+        <ul class="nav-links">
+            <li><a href="index.php">Home</a></li>
+            <li><a href="decks.php">Decks</a></li>
+        </ul>
+    </nav>
 
-<!-- Box centrale -->
-<div class="login-card">
-    <h2>Crea Account</h2>
-    <p class="subtitle">Inserisci i tuoi dati per registrarti</p>
+    <header class="auth-header">
+        <h1><a href="index.php">Royal Tracker</a></h1>
+    </header>
 
-    <?php if ($error): ?>
-        <div class="error-msg"><?php echo $error; ?></div>
-    <?php endif; ?>
+    <div class="form-container-centered">
+        <div class="auth-card">
+            <h2>Crea Account</h2>
+            <p class="subtitle">Inserisci i tuoi dati per registrarti</p>
 
-    <?php if ($success): ?>
-        <div class="success-msg"><?php echo $success; ?></div>
-    <?php endif; ?>
+            <?php if ($error) echo "<p style='color:red; margin-bottom:10px;'>$error</p>"; ?>
+            <?php if ($success) echo "<p style='color:green; margin-bottom:10px;'>$success</p>"; ?>
 
-    <form method="POST">
-        <div class="input-group">
-            <input type="text" name="username" placeholder="Username" required>
+            <form method="POST">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="text" name="gamertag" placeholder="GamerTag (#ABC123)" required>
+                <button type="submit">Registrati</button>
+            </form>
+            
+            <p class="auth-link">Hai già un account? <a href="login.php">Accedi</a></p>
         </div>
-        <div class="input-group">
-            <input type="password" name="password" placeholder="Password" required>
-        </div>
-        <div class="input-group">
-            <input type="text" name="gamertag" placeholder="GamerTag (#ABC123)" required>
-        </div>
-        <button type="submit" class="login-btn">Registrati</button>
-    </form>
-
-    <p class="auth-link">
-        Hai già un account? <a href="login.php">Accedi</a>
-    </p>
-</div>
+    </div>
 
 </body>
 </html>
-

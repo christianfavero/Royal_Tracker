@@ -9,6 +9,14 @@ class ClashRoyaleAPI {
         $this->apiKey = $key;
     }
 
+    public function getBattleLog(string $gamertag): array {
+    // Rimuove eventuale # e riaggiunge per sicurezza con l'encode
+    $gamertag = ltrim($gamertag, '#');
+    $encodedTag = urlencode("#" . $gamertag);
+
+    return $this->request("players/" . $encodedTag . "/battlelog");
+}
+
     private function request(string $endpoint): array {
 
         $url = $this->baseUrl . $endpoint;

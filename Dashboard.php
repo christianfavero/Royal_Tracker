@@ -33,11 +33,22 @@ if ($gamertag[0] !== '#') {
 $api = new ClashRoyaleAPI($clash_api_key);
 $player = $api->getPlayer($gamertag);
 
+// ... dopo aver creato l'oggetto $api = new ClashRoyaleAPI($apiKey);
+
+$battleLog = $api->getBattleLog($gamertag);
+
+// Prendiamo solo le prime 5 partite se non ci sono errori
+$lastFiveBattles = [];
+if (!isset($battleLog['error'])) {
+    $lastFiveBattles = array_slice($battleLog, 0, 5);
+}
 // Controllo se API ha restituito dati
 if (!$player || isset($player["reason"])) {
     $error = "Impossibile recuperare i dati del giocatore. Controlla il GamerTag o la chiave API.";
 }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="it">
@@ -49,55 +60,91 @@ if (!$player || isset($player["reason"])) {
 </head>
 <body>
 
-<!-- ================= NAVBAR ================= -->
 <nav class="navbar">
-    <div class="logo"><a href="index.php">Royal Tracker</a></div>
-    <ul class="nav-links">
-        <li><a href="index.php">Home</a></li>
-        <li><a href="decks.php">Decks</a></li>
-        <li><a href="challenges.php">Challenges</a></li>
-        <li><a href="community.php">Community</a></li>
-        <li><a href="videos.php">Video</a></li>
-    </ul>
-    <ul class="nav-links">
-        <li><a href="dashboard.php">Dashboard</a></li>
-        <li><a href="logout.php">Logout</a></li>
-    </ul>
-</nav>
+        <div class="logo">
+            <a href="index.php">Royal Tracker</a>
+        </div>
 
-<!-- ================= MAIN ================= -->
+        <ul class="nav-links">
+            <li><a href="index.php">Home</a></li>
+            <li><a href="decks.php">Decks</a></li>
+            <li><a href="challenges.php" class="requires-login">Challenges</a></li>
+            <li><a href="community.php" class="requires-login">Community</a></li>
+            <li><a href="videos.php" class="requires-login">Video</a></li>
+        </ul>
+</nav>  
+<!-- ================= NAVBAR ================= -->
 <main class="home-sections">
-    <?php if(isset($error)): ?>
+    <?php if(isset($error) && !empty($error)): ?>
         <section class="section">
             <h2>Errore</h2>
-            <p><?php echo $error; ?></p>
+            <p><?php echo htmlspecialchars($error); ?></p>
         </section>
     <?php else: ?>
         <section class="section">
-            <h2>Benvenuto <?php echo htmlspecialchars($player["name"] ?? "N/D"); ?></h2>
+            <h2>Benvenuto <?php echo htmlspecialchars($player["name"] ?? "Guerriero"); ?></h2>
             <p>GamerTag: <?php echo htmlspecialchars($gamertag); ?></p>
 
             <div class="cards-container">
+                
                 <div class="card">
                     <h3>Livello</h3>
                     <p><?php echo $player["expLevel"] ?? "N/D"; ?></p>
                 </div>
+
                 <div class="card">
                     <h3>Trofei</h3>
-                    <p><?php echo $player["trophies"] ?? "N/D"; ?></p>
+                    <p><?php echo $player["trophies"] ?? "0"; ?></p>
                 </div>
+
                 <div class="card">
                     <h3>Vittorie</h3>
-                    <p><?php echo $player["wins"] ?? "N/D"; ?></p>
+                    <p><?php echo $player["wins"] ?? "0"; ?></p>
                 </div>
+
                 <div class="card">
                     <h3>Sconfitte</h3>
-                    <p><?php echo $player["losses"] ?? "N/D"; ?></p>
+                    <p><?php echo $player["losses"] ?? "0"; ?></p>
                 </div>
+
+                <div class="card">
+                    <h3>Miglior Record</h3>
+                    <p><?php echo $player["bestTrophies"] ?? "N/D"; ?></p>
+                </div>
+
             </div>
         </section>
     <?php endif; ?>
 </main>
+<section class="section">
+    <h2 style="text-align: center; margin-bottom: 30px;">Ultime 5 Partite</h2>
+    <div class="battle-list">
+        <?php foreach($lastFiveBattles as $battle): ?>
+         <div class="battle-row">
+    <div class="player-side">
+        <h4>Tu</h4>
+        <div class="deck-images">
+            <?php foreach($battle["team"][0]["cards"] as $card): ?>
+                <img src="<?php echo $card['iconUrls']['medium']; ?>">
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <div class="battle-vs">VS</div>
+
+    <div class="player-side">
+        <h4><?php echo htmlspecialchars($battle["opponent"][0]["name"]); ?>
+        <div class="deck-images">
+            <?php foreach($battle["opponent"][0]["cards"] as $card): ?>
+                <img src="<?php echo $card['iconUrls']['medium']; ?>">
+            <?php endforeach; ?>
+        </div>
+        </h4>
+    </div>
+</div>
+        <?php endforeach; ?>
+    </div>
+</section>
 
 </body>
 </html>
