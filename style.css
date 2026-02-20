@@ -8,8 +8,8 @@
 
 /* =================== BODY =================== */
 body {
-    background: #f2f2f2;
-    color: #333;
+    background: #0f1923; 
+    color: #ffffff;
 }
 
 /* =================== LOGIN / REGISTRAZIONE =================== */
@@ -91,34 +91,42 @@ body.login-page {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 30px;
-    background-color: #1c1f26;
-    color: white;
-    border-radius: 0 0 10px 10px;
+    padding: 18px 40px;
+
+    background: linear-gradient(180deg, #1e3c72, #0f2027);
+    border-bottom: 3px solid #f5b700;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+
+    position: relative;
+    z-index: 10;
 }
 
-.navbar .logo {
-    font-size: 22px;
+.navbar .logo a {
+    font-size: 24px;
     font-weight: bold;
     color: #f5b700;
+    text-decoration: none;
+    text-shadow: 0 0 10px rgba(245,183,0,0.6);
 }
 
 .navbar .nav-links {
     display: flex;
-    gap: 20px;
+    gap: 25px;
     list-style: none;
     align-items: center;
 }
 
 .navbar .nav-links li a {
-    color: white;
+    color: #ffffff;
     text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
 }
 
 .navbar .nav-links li a:hover {
     color: #f5b700;
+    text-shadow: 0 0 8px rgba(245,183,0,0.8);
 }
 
 .user-gamertag {
@@ -127,34 +135,73 @@ body.login-page {
 
 /* =================== HERO =================== */
 .hero {
+    position: relative;
     text-align: center;
-    padding: 60px 20px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 100px 20px;
     color: white;
+
+    background: url("sfondo.webp") center/cover no-repeat;
+}
+
+/* Overlay scuro sopra l'immagine */
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(15,25,35,0.9));
+    z-index: 1;
+}
+
+.hero h1,
+.hero p,
+.hero-btn {
+    position: relative;
+    z-index: 2;
 }
 
 .hero h1 {
-    font-size: 36px;
-    margin-bottom: 10px;
+    font-size: 42px;
+    margin-bottom: 15px;
+    color: #f5b700;
+    text-shadow: 0 0 20px rgba(245,183,0,0.8);
 }
 
 .hero p {
-    font-size: 16px;
+    font-size: 18px;
+    margin-bottom: 25px;
 }
 
-/* =================== SEZIONI PRINCIPALI =================== */
-main section {
-    padding: 30px 20px;
-    max-width: 1200px;
-    margin: 0 auto 20px auto;
-    background-color: white;
+.hero-btn {
+    display: inline-block;
+    padding: 14px 28px;
+    background: linear-gradient(180deg, #f5b700, #d89c00);
+    color: #1c1f26;
+    font-weight: bold;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-decoration: none;
+    box-shadow: 0 6px 0 #a87400;
+    transition: all 0.2s ease;
+}
+
+.hero-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 0 #a87400;
+}
+
+main section {
+    padding: 40px 30px;
+    max-width: 1100px;
+    margin: 40px auto;
+    background: linear-gradient(180deg, #1e3c72, #16222a);
+    border-radius: 18px;
+    border: 2px solid #f5b700;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
 }
 
 main section h2 {
     margin-bottom: 15px;
-    color: #764ba2;
+    color: #f5b700;
+    text-shadow: 0 0 10px rgba(245,183,0,0.6);
 }
 
 /* Deck cards */
