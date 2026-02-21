@@ -4,6 +4,7 @@ require "cr-api.php";
 
 $api = new ClashRoyaleAPI($clash_api_key);
 
+
 $locationId = $_GET['location'] ?? 'global';
 
 $response = $api->getLeaderboard($locationId, 50);
@@ -37,50 +38,74 @@ foreach($rankings as $player) {
           </tr>";
 }
 ?>
+
+
+
+
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
-    <title>Classifica Clash Royale</title>
-    <link rel="stylesheet" href="style.css"> </head>
+<meta charset="UTF-8">
+<title>Leaderboard Clash Royale</title>
+<link rel="stylesheet" href="style.css">
+</head>
 <body>
 
-<main class="container">
-    <h1>Classifica Top 50 (<?php echo strtoupper($loc); ?>)</h1>
-    
-    <div class="menu-classifica">
-        <a href="leaderboard.php?loc=global">Mondiale</a> | 
-        <a href="leaderboard.php?loc=57000122">Italia</a>
+<nav class="navbar">
+    <div class="logo"><a href="index.php">Royal Tracker</a></div>
+    <ul class="nav-links">
+        <li><a href="index.php">Home</a></li>
+        <li><a href="Leaderboard.php">Leaderboard</a></li>
+    </ul>
+</nav>
+
+<div class="leaderboard-container">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>Top Players (<?php echo htmlspecialchars($locations[$selectedCountry]['name']); ?>)</h2>
+        <form method="GET">
+            <select name="country" onchange="this.form.submit()">
+                <?php foreach($locations as $code => $loc): ?>
+                    <option value="<?php echo $code; ?>" <?php echo ($selectedCountry === strtolower($code)) ? 'selected' : ''; ?>>
+                        <?php echo $loc['name']; ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </form>
     </div>
 
-    <table class="leaderboard-table">
-        <thead>
-            <tr>
-                <th>Pos.</th>
-                <th>Giocatore</th>
-                <th>Clan</th>
-                <th>Trofei</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if(!empty($rankings)): ?>
-                <?php foreach($rankings as $player): ?>
-                    <tr>
-                        <td>#<?php echo $player['rank']; ?></td>
-                        <td>
-                            <a href="dashboard.php?tag=<?php echo urlencode($player['tag']); ?>">
-                                <?php echo htmlspecialchars($player['name']); ?>
-                            </a>
-                        </td>
-                        <td><?php echo htmlspecialchars($player['clan']['name'] ?? '-'); ?></td>
-                        <td>🏆 <?php echo $player['trophies']; ?></td>
+    <?php if (!empty($error)): ?>
+        <p style="color:red;"><?php echo $error; ?></p>
+    <?php else: ?>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>Trofei</th>
+                    <th>Clan</th>
+                    <th>Location</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($players as $idx => $player): ?>
+                    <?php
+                        $class = '';
+                        if ($idx === 0) $class = 'top1';
+                        elseif ($idx === 1) $class = 'top2';
+                        elseif ($idx === 2) $class = 'top3';
+                    ?>
+                    <tr class="<?php echo $class; ?>">
+                        <td><?php echo $idx + 1; ?></td>
+                        <td><?php echo htmlspecialchars($player['name'] ?? ''); ?></td>
+                        <td><?php echo $player['trophies'] ?? '-'; ?></td>
+                        <td><?php echo htmlspecialchars($player['clan_name'] ?? '-'); ?></td>
+                        <td><?php echo htmlspecialchars($player['location_name'] ?? '-'); ?></td>
                     </tr>
                 <?php endforeach; ?>
-            <?php else: ?>
-                <tr><td colspan="4">Nessun dato trovato. Controlla la chiave API o l'ID location.</td></tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
-</main>
+            </tbody>
+        </table>
+    <?php endif; ?>
+</div>
 
 </body>
 </html>
