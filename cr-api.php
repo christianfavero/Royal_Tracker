@@ -72,13 +72,67 @@ class ClashRoyaleAPI {
 
         return $this->request("players/" . $encodedTag);
     }
+/**
+ * Estrae la lista delle carte possedute dal giocatore con i relativi livelli.
+ */
+public function getPlayerCards(string $gamertag): array {
+    $profile = $this->getPlayer($gamertag);
+    if (isset($profile['error']) || !isset($profile['cards'])) {
+        return $profile;
+    }
 
+    $cards = $profile['cards'];
+
+    // 1. Calcoliamo i livelli e le evoluzioni per TUTTE le carte prima di fare altro
+    foreach ($cards as &$card) {
+        $offset = 0;
+        // Usiamo un approccio sicuro per la rarità
+        $rarity = isset($card['rarity']) ? strtolower($card['rarity']) : 'common';
+        
+        switch ($rarity) {
+            case 'rare': $offset = 2; break;
+            case 'epic': $offset = 5; break;
+            case 'legendary': $offset = 8; break;
+            case 'champion': $offset = 10; break;
+            default: $offset = 0;
+        }
+        
+        // Assegniamo SEMPRE il display_level per evitare il Warning
+        $card['display_level'] = ($card['level'] ?? 1) + $offset;
+
+        // Controllo Evoluzione: usiamo il campo evolutionLevel che l'API fornisce per ogni carta
+        $card['is_evo'] = isset($card['evolutionLevel']) && $card['evolutionLevel'] > 0;
+        
+        // Se è evoluta, proviamo a forzare l'immagine viola
+        if ($card['is_evo'] && isset($card['iconUrls']['evolutionMedium'])) {
+            $card['iconUrls']['medium'] = $card['iconUrls']['evolutionMedium'];
+        }
+    }
+    unset($card); // Scolleghiamo il riferimento del ciclo
+
+    // 2. Ora che TUTTE hanno il display_level, ordiniamo
+    usort($cards, function($a, $b) {
+        // Se il livello è uguale, ordina per nome
+        if ($b['display_level'] === $a['display_level']) {
+            return strcmp($a['name'] ?? '', $b['name'] ?? '');
+        }
+        return $b['display_level'] <=> $a['display_level'];
+    });
+
+    return $cards;
+}
 
     public function GetAllCards() : array{
         return $this->request("cards");
     }
 
-    public function getLeaderboard(string $location = 'global'): array {
-        return $this->request("locations/{$location}/rankings/players");
-    }
+public function getLeaderboard(string $locationId = 'global', int $limit = 50) {
+    // Se locationId è 'global', l'endpoint è locations/global/...
+    // Se è un ID numerico (Italia), è locations/57000122/...
+    $url = "locations/" . $locationId . "/rankings/players?limit=" . $limit;
+    return $this->request($url);
+}
+public function getLocations(): array {
+    return $this->request("locations");
+}
 }
