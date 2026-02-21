@@ -18,8 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST["username"]);
     $password = trim($_POST["password"]);
     $gamertag = trim($_POST["gamertag"]);
+    $email = trim($_POST["email"]);
 
-    if (empty($username) || empty($password) || empty($gamertag)) {
+    if (empty($username) || empty($password) || empty($gamertag) || empty($email)) {
         $error = "Tutti i campi sono obbligatori.";
     } else {
 
@@ -35,8 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            $insert = $conn->prepare("INSERT INTO users (username, password_hash, player_tag) VALUES (?, ?, ?)");
-            $insert->bind_param("sss", $username, $hashedPassword, $gamertag);
+            $insert = $conn->prepare("INSERT INTO users (username, password_hash, player_tag, email) VALUES (?, ?, ?)");
+            $insert->bind_param("sss", $username, $hashedPassword, $gamertag, $email);
 
             if ($insert->execute()) {
                 $success = "Registrazione completata! Puoi effettuare il login.";
@@ -80,11 +81,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <form method="POST">
                 <input type="text" name="username" placeholder="Username" required>
+                <input type="text" name = "email" placeholder = "Email" required>
                 <input type="password" name="password" placeholder="Password" required>
                 <input type="text" name="gamertag" placeholder="GamerTag (#ABC123)" required>
                 <button type="submit">Registrati</button>
             </form>
-            
+            <br>
             <p class="auth-link">Hai già un account? <a href="login.php">Accedi</a></p>
         </div>
     </div>

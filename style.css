@@ -110,8 +110,7 @@ body {
 
 a {
     color:#ffffff;
-    text-decoration: underline;
-    text-decoration: solid;
+    font-weight: bolder;
 }
 
 .auth-link a { 
@@ -284,4 +283,11 @@ main.home-sections, .home-sections {
 
 .player-side {
     max-width: 200px !important; /* Stringe il riquadro del deck */
+}
+
+.login-card {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 40px 20px;
 }

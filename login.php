@@ -41,17 +41,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="login-page">
-
-<div class="login-card">
-    <div class="auth-card"> <div class="logo-container"></div>
-    <h2>Entra nell’Arena</h2>
-    <p class="subtitle">Inserisci il tuo Gamer Tag per iniziare</p>
-
+<nav class="navbar">
+        <div class="logo"><a href="index.php">Royal Tracker</a></div>
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <li><a href="decks.php">Decks</a></li>
-               </ul>
-               
+        </ul>
+    </nav>
+
+<div class="login-card">
+    <div class="auth-card"> 
+    <h2>Entra nell’Arena</h2>
+    <p class="subtitle">Inserisci il tuo Gamer Tag per iniziare</p>
     <?php if ($error): ?>
         <div class="error"><?php echo $error; ?></div>
     <?php endif; ?>
