@@ -72,4 +72,9 @@ class ClashRoyaleAPI {
 
         return $this->request("players/" . $encodedTag);
     }
+
+
+    public function GetAllCards() : array{
+        return $this->request("cards");
+    }
 }
