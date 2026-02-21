@@ -352,6 +352,19 @@ main.home-sections, .home-sections {
     align-items: center;
     justify-content: center;
 }
+.evo-label {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: linear-gradient(45deg, #7000ff, #ff00ff);
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid white;
+    z-index: 3;
+}
 
 @media (max-width: 900px) {
     .all-cards-grid {
