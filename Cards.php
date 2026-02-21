@@ -42,15 +42,20 @@ function getRarityColor($rarity) {
 
         <div class="all-cards-grid">
     <?php foreach($allCards as $card): 
-        // 1. Scegliamo l'immagine: se c'è l'evoluzione, prendi quella
-        $imageUrl = $card['iconUrls']['evolutionMedium'] ?? $card['iconUrls']['medium'];
-        
-        // 2. Prendiamo il colore in base alla rarità
-        $borderColor = getRarityColor($card['rarity'] ?? '');
-        
-        // 3. Controlliamo se è un'evoluzione per aggiungere un'etichetta (opzionale)
-        $isEvolution = isset($card['iconUrls']['evolutionMedium']);
-    ?>
+    // 1. Scegliamo l'immagine: se c'è l'evoluzione, prendi quella
+    $imageUrl = $card['iconUrls']['evolutionMedium'] ?? $card['iconUrls']['medium'];
+    
+    // 2. Prendiamo il colore in base alla rarità
+    $rarity = $card['rarity'] ?? '';
+    $borderColor = getRarityColor($rarity);
+    
+    // 3. Controlliamo se è un'evoluzione
+    $isEvolution = isset($card['iconUrls']['evolutionMedium']);
+    
+    // 4. Controlliamo se è un campione (hero)
+    $isChampion = strtolower($rarity) === 'champion';
+?>
+
         <div class="card-item" style="border-color: <?php echo $borderColor; ?>;">
             
             <div class="elixir-badge"><?php echo $card['elixirCost'] ?? '0'; ?></div>

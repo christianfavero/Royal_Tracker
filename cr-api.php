@@ -77,4 +77,8 @@ class ClashRoyaleAPI {
     public function GetAllCards() : array{
         return $this->request("cards");
     }
+
+    public function getLeaderboard(string $location = 'global'): array {
+        return $this->request("locations/{$location}/rankings/players");
+    }
 }

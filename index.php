@@ -23,9 +23,11 @@ require "config.php"; // Include DB e chiave API
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <li><a href="Cards.php">Carte</a></li>
+            <li><a href = "Leaderboard.php">Leaderboard</a></li>
             <li><a href="challenges.php" class="requires-login">Challenges</a></li>
             <li><a href="community.php" class="requires-login">Community</a></li>
             <li><a href="videos.php" class="requires-login">Video</a></li>
+        
         </ul>
 
         <ul class="nav-links">
