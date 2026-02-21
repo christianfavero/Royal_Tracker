@@ -102,7 +102,7 @@ if (!isset($battleLog["error"])) {
         </div>
 
         <div class="card">
-            <h3>Trofei</h3>
+            <h3>Coppe</h3>
             <p><?php echo $player["trophies"]; ?></p>
         </div>
 
@@ -117,7 +117,7 @@ if (!isset($battleLog["error"])) {
         </div>
 
         <div class="card">
-            <h3>Miglior Record</h3>
+            <h3>Record Coppe</h3>
             <p><?php echo $player["bestTrophies"]; ?></p>
         </div>
     </div>

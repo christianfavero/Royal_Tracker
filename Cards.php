@@ -3,11 +3,12 @@ session_start();
 require "config.php";
 require "cr-api.php";
 
-
+// Inizializzazione API
 $api = new ClashRoyaleAPI($clash_api_key);
-$response = $api -> GetAllCards();
+$response = $api->GetAllCards();
 $allCards = $response['items'] ?? [];
 
+// Funzione colore in base alla rarità
 function getRarityColor($rarity) {
     switch (strtolower($rarity)) {
         case 'common': return '#5db6f3';    // Blu
@@ -19,7 +20,18 @@ function getRarityColor($rarity) {
     }
 }
 
+// Mappa delle carte Hero con immagini locali
+// Mappa Hero locale usando nomi base delle carte
+$heroImages = [
+    'Knight'        => 'heroes/knight.webp',
+    'Giant'         => 'heroes/giant.webp',
+    'Mini P.E.K.K.A'=> 'heroes/minipekka.webp',
+    'Musketeer'     => 'heroes/musketeer.webp',
+    'Ice Golem'     => 'heroes/icegolem.webp',
+    'Wizard'        => 'heroes/wizard.webp'
+];
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,54 +40,66 @@ function getRarityColor($rarity) {
     <title>Carte Clash Royale</title>
     <link rel="stylesheet" href="style.css">
 </head>
+<body class="login-page">
 
-    <body class="login-page">
 <nav class="navbar">
-        <div class="logo"><a href="index.php">Royal Tracker</a></div>
-        <ul class="nav-links">
-            <li><a href="index.php">Home</a></li>
-        </ul>
-    </nav>
-    <main class="home-sections">
-    <section class="section">
-        <h2 style="text-align: center; margin-bottom: 30px;">Tutte le Carte</h2>
+    <div class="logo"><a href="index.php">Royal Tracker</a></div>
+    <ul class="nav-links">
+        <li><a href="index.php">Home</a></li>
+    </ul>
+</nav>
 
-        <div class="all-cards-grid">
+<main class="home-sections">
+<section class="section">
+    <h2 style="text-align: center; margin-bottom: 30px;">Tutte le Carte</h2>
+    <div class="all-cards-grid">
+
     <?php foreach($allCards as $card): 
-    // 1. Scegliamo l'immagine: se c'è l'evoluzione, prendi quella
-    $imageUrl = $card['iconUrls']['evolutionMedium'] ?? $card['iconUrls']['medium'];
-    
-    // 2. Prendiamo il colore in base alla rarità
-    $rarity = $card['rarity'] ?? '';
-    $borderColor = getRarityColor($rarity);
-    
-    // 3. Controlliamo se è un'evoluzione
-    $isEvolution = isset($card['iconUrls']['evolutionMedium']);
-    
-    // 4. Controlliamo se è un campione (hero)
-    $isChampion = strtolower($rarity) === 'champion';
-?>
+        $cardName = $card['name'] ?? '';
+
+    // Priorità immagini: Hero > Evolution > Normale
+    if (isset($heroImages[$cardName])) {
+        $imageUrl = $heroImages[$cardName];
+        $isHero = true;
+    } elseif (isset($card['iconUrls']['evolutionMedium'])) {
+        $imageUrl = $card['iconUrls']['evolutionMedium'];
+        $isHero = false;
+    } else {
+        $imageUrl = $card['iconUrls']['medium'] ?? '';
+        $isHero = false;
+    }
+
+        // Colore bordo
+        $borderColor = getRarityColor($card['rarity'] ?? '');
+
+        // Etichetta evoluzione
+        $isEvolution = isset($card['iconUrls']['evolutionMedium']);
+    ?>
 
         <div class="card-item" style="border-color: <?php echo $borderColor; ?>;">
             
             <div class="elixir-badge"><?php echo $card['elixirCost'] ?? '0'; ?></div>
-            
+
             <?php if($isEvolution): ?>
                 <span class="evo-label">EVO</span>
             <?php endif; ?>
 
-            <img src="<?php echo $imageUrl; ?>" alt="<?php echo $card['name']; ?>">
-            
+            <?php if ($isHero) echo '<br>'; ?>
+            <img src="<?php echo $imageUrl; ?>" alt="<?php echo htmlspecialchars($cardName); ?>">
+ 
             <div class="card-info">
-                <h3><?php echo htmlspecialchars($card['name']); ?></h3>
+                <h3><?php echo htmlspecialchars($cardName); ?></h3>
                 <p style="color: <?php echo $borderColor; ?>; font-weight: bold; font-size: 10px;">
                     <?php echo strtoupper($card['rarity'] ?? ''); ?>
                 </p>
             </div>
         </div>
+
     <?php endforeach; ?>
-</div>
-    </section>
+
+    </div>
+</section>
 </main>
+
 </body>
 </html>
