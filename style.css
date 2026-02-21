@@ -108,7 +108,16 @@ body {
     cursor: pointer;
 }
 
-.auth-link a { color: #f5b700 !important; text-decoration: none; }
+a {
+    color:#ffffff;
+    text-decoration: underline;
+    text-decoration: solid;
+}
+
+.auth-link a { 
+    color: #f5b700 !important; 
+    text-decoration: none; 
+}
 
 /* =================== DASHBOARD & SEZIONI (RECUPERATI) =================== */
 main.home-sections, .home-sections {
