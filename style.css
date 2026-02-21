@@ -361,3 +361,10 @@ main.home-sections, .home-sections {
         grid-template-columns: 1fr;
     }
 }
+
+.winner-crown {
+    width: 22px;
+    height: 22px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
