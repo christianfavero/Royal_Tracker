@@ -36,8 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            $insert = $conn->prepare("INSERT INTO users (username, password_hash, player_tag, email) VALUES (?, ?, ?)");
-            $insert->bind_param("sss", $username, $hashedPassword, $gamertag, $email);
+            $insert = $conn->prepare("INSERT INTO users (username, password_hash, player_tag, email) VALUES (?, ?, ?, ?)");
+            $insert->bind_param("ssss", $username, $hashedPassword, $gamertag, $email);
 
             if ($insert->execute()) {
                 $success = "Registrazione completata! Puoi effettuare il login.";
