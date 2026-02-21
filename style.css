@@ -291,3 +291,76 @@ main.home-sections, .home-sections {
     width: 100%;
     padding: 40px 20px;
 }
+
+/* CONTENITORE GRID */
+.all-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 carte per riga */
+    gap: 30px; /* spazio tra le carte */
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto; /* centra tutto */
+}
+
+/* SINGOLA CARTA */
+.card-item {
+    background-color: #2f3e6b; /* riquadro */
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Effetto hover carino */
+.card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+}
+
+/* Immagine carta */
+.card-item img {
+    width: 120px;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+/* Info carta */
+.card-info h3 {
+    margin: 10px 0 5px;
+    color: white;
+}
+
+.card-info p {
+    color: #dcdcdc;
+    font-size: 14px;
+}
+
+/* Badge elisir */
+.elixir-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: purple;
+    color: white;
+    font-weight: bold;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 900px) {
+    .all-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .all-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
