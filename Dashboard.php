@@ -67,7 +67,7 @@ if (!$player || isset($player["reason"])) {
 
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
-            <li><a href="decks.php">Decks</a></li>
+            <li><a href="Cards.php">Cards</a></li>
             <li><a href="challenges.php" class="requires-login">Challenges</a></li>
             <li><a href="community.php" class="requires-login">Community</a></li>
             <li><a href="videos.php" class="requires-login">Video</a></li>

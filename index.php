@@ -9,7 +9,6 @@ require "config.php"; // Include DB e chiave API
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Royal Tracker - Home</title>
-    <!-- Link corretto al CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
