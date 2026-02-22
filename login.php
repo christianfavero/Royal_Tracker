@@ -10,15 +10,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($gamertag === "") {
         $error = "Inserisci il tuo Gamer Tag!";
     } else {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE player_tag = ?");
+        $stmt = $conn->prepare("SELECT id_user, username, player_tag FROM users WHERE player_tag = ?");
         $stmt->bind_param("s", $gamertag);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows === 1) {
-            $user = $result->fetch_assoc();
-            $_SESSION["user_id"] = $user["id_user"];
-            $_SESSION["gamertag"] = $user["gamertag"];
+    $user = $result->fetch_assoc();
+    $_SESSION["user_id"] = $user["id_user"];
+    $_SESSION["username"] = $user["username"]; 
+
+    $_SESSION["gamertag"] = $user["player_tag"]; 
+   
         } else {
             $insert = $conn->prepare("INSERT INTO users (player_tag) VALUES (?)");
             $insert->bind_param("s", $gamertag);
