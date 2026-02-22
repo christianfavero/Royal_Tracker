@@ -131,4 +131,33 @@ public function getLocations() {
     // Passa solo "locations"
     return $this->request("locations");
 }
+
+public function getYouTubeVideosCached(string $query, int $maxResults = 6): array {
+    $cacheFile = 'youtube_cache.json';
+    $cacheTime = 6 * 3600; // 6 ore in secondi (3600s * 6)
+
+    // Controlliamo se il file esiste ed è ancora valido
+    if (file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTime)) {
+        return json_decode(file_get_contents($cacheFile), true);
+    }
+
+    // Se la cache è scaduta o non esiste, chiamiamo YouTube
+    $apiKey = "AIzaSyA1YqTcnreHsibyNVeSZj6tLXZpVVA1oUg"; 
+    $encodedQuery = urlencode($query);
+    $url = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=$maxResults&q=$encodedQuery&type=video&key=$apiKey&order=date";
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+
+    // Salviamo il risultato nel file se la risposta è valida
+    if (isset($data['items'])) {
+        file_put_contents($cacheFile, json_encode($data));
+    }
+
+    return $data;
+}
 }

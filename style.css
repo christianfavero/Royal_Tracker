@@ -468,3 +468,23 @@ select { padding: 5px; margin: 10px; }
             font-weight: bold;
             cursor: pointer;
         }
+
+        .video-thumbnail-container {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Icona "Play" che appare al passaggio del mouse */
+.video-thumbnail-container::after {
+    content: '▶';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-size: 50px; color: white;
+    transition: 0.3s;
+    opacity: 0.8;
+}
+
+.video-card:hover .video-thumbnail-container::after {
+    transform: translate(-50%, -50%) scale(1);
+}
