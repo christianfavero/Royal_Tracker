@@ -4,46 +4,21 @@ require "cr-api.php";
 
 $api = new ClashRoyaleAPI($clash_api_key);
 
-
 $locations = [
-    'global' => 57000000,
-    'IT' => 57000021,
-    'US' => 57000009
+    "global" => "Global",
+    "57000021" => "Italy",
+    "57000009" => "United States"
 ];
 
-$selected = $_GET['location'] ?? 'global';
-$locationId = $locations[$selected] ?? 57000000;
+$selected = $_GET["location"] ?? "global";
 
-$response = $api->getLeaderboard($locationId);
+$response = $api->getLeaderboard($selected, 50);
 
-// DEBUG: Togli il commento alla riga sotto se vuoi vedere cosa risponde l'API
-// print_r($response); 
-
-if (empty($response['items'])) {
-    echo "<tr><td colspan='3' style='text-align:center;'>
-            Nessun dato. URL usato: locations/$locationId/rankings/players
-          </td></tr>";
-    exit;
+if (isset($response["error"])) {
+    die("Errore API: " . $response["message"]);
 }
 
-// DEFINIAMO $rankings usando i dati di $response
-$rankings = $response['items'];
-
-foreach($rankings as $player) {
-    // Creiamo il link alla tua dashboard usando il tag
-    $tagPerLink = urlencode($player['tag']);
-    
-    echo "<tr>
-            <td class='rank'>#{$player['rank']}</td>
-            <td class='player-name'>
-                <a href='dashboard.php?tag={$tagPerLink}' style='color:white; text-decoration:none;'>
-                    <strong>" . htmlspecialchars($player['name']) . "</strong>
-                </a><br>
-                <small>{$player['tag']}</small>
-            </td>
-            <td class='trophies'>🏆 {$player['trophies']}</td>
-          </tr>";
-}
+$players = $response["items"] ?? [];
 ?>
 
 
@@ -86,15 +61,20 @@ foreach($rankings as $player) {
 
 <div class="leaderboard-container">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h2>Top Players (<?php echo htmlspecialchars($locations[$selectedCountry]['name']); ?>)</h2>
-        <form method="GET">
-            <select name="country" onchange="this.form.submit()">
-                <?php foreach($locations as $code => $loc): ?>
-                    <option value="<?php echo $code; ?>" <?php echo ($selectedCountry === strtolower($code)) ? 'selected' : ''; ?>>
-                        <?php echo $loc['name']; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+        <h2>
+    Top Players (<?php echo htmlspecialchars($locations[$selected] ?? "Global"); ?>)
+</h2>
+<form method="GET">
+            <form method="GET">
+    <select name="location" onchange="this.form.submit()">
+        <?php foreach($locations as $code => $name): ?>
+            <option value="<?php echo $code; ?>"
+                <?php echo ($selected === $code) ? 'selected' : ''; ?>>
+                <?php echo $name; ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+</form>
         </form>
     </div>
 

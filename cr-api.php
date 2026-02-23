@@ -126,9 +126,11 @@ public function getPlayerCards(string $gamertag): array {
         return $this->request("cards");
     }
 
-public function getLeaderboard($locationId, $limit = 50): array {
-    return $this->request("locations/{$locationId}/rankings/players?limit={$limit}");
+public function getLeaderboard(string $location = "global", int $limit = 50): array {
+    $endpoint = "locations/{$location}/rankings/players?limit={$limit}";
+    return $this->request($endpoint);
 }
+
 public function getLocations(): array {
     return $this->request("locations");
 }
