@@ -71,24 +71,37 @@ $playerCards = $api->getPlayerCards($gamertag);
 <body>
 
 <nav class="navbar">
-    <div class="logo">
-        <a href="index.php">Royal Tracker</a>
-    </div>
-    <ul class="nav-links">
-        <li><a href="index.php">Home</a></li>
-        <li><a href="Cards.php">Carte</a></li>
-        <li><a href="challenges.php">Challenges</a></li>
-        <li><a href="community.php">Community</a></li>
-        <li><a href="videos.php">Video</a></li>
-    </ul>
-</nav>
+        <div class="logo">
+            <a href="index.php">Royal Tracker</a>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="index.php">Home</a></li>
+            <li><a href="Cards.php">Carte</a></li>
+            <li><a href = "Leaderboard.php">Leaderboard</a></li>
+            <li><a href="challenges.php" class="requires-login">Challenges</a></li>
+            <li><a href="Social.php" class="requires-login">Community</a></li>
+            <li><a href="videos.php" class="requires-login">Video</a></li>
+        
+        </ul>
+
+        <ul class="nav-links">
+            <?php if(isset($_SESSION["user_id"])): ?>
+                <li><a href="dashboard.php">Dashboard</a></li>
+                <li><a href="logout.php">Logout</a></li>
+            <?php else: ?>
+                <li><a href="login.php">Accedi</a></li>
+                <li><a href="register.php">Registrati</a></li>
+            <?php endif; ?>
+        </ul>
+    </nav>
 
 <main class="home-sections">
 
     <div style="text-align: center; margin: 20px 0;">
         <select id="viewSelector" onchange="switchView(this.value)" style="padding: 10px; border-radius: 8px; background: #2c2f38; color: white; border: 1px solid #f5b700;">
-            <option value="stats">📊 Informazioni Generali</option>
-            <option value="collection">🎴 Collezione Carte</option>
+            <option value="stats">Informazioni Generali</option>
+            <option value="collection">Collezione Carte</option>
         </select>
     </div>
 
@@ -176,11 +189,6 @@ $playerCards = $api->getPlayerCards($gamertag);
 
     <?php endif; ?>
 </main>
-
-
-
-
-
 
 </main>
 <script>

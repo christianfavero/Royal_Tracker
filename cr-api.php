@@ -126,11 +126,8 @@ public function getPlayerCards(string $gamertag): array {
         return $this->request("cards");
     }
 
-public function getLeaderboard(string $locationId = 'global', int $limit = 50) {
-    // Se locationId è 'global', l'endpoint è locations/global/...
-    // Se è un ID numerico (Italia), è locations/57000122/...
-    $url = "locations/" . $locationId . "/rankings/players?limit=" . $limit;
-    return $this->request($url);
+public function getLeaderboard($locationId, $limit = 50): array {
+    return $this->request("locations/{$locationId}/rankings/players?limit={$limit}");
 }
 public function getLocations(): array {
     return $this->request("locations");
