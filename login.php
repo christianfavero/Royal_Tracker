@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <li><a href="decks.php">Decks</a></li>
         </ul>
     </nav>
-
+<br><br><br><br>
 <div class="login-card">
     <div class="auth-card"> 
     <h2>Entra nell’Arena</h2>

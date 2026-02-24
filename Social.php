@@ -58,6 +58,7 @@ if ($user_data) {
             <?php endif; ?>
         </ul>
     </nav>
+    <br><br><br><br>
 <div class="social-container">
     <div class="chat-sidebar">
         <div class="sidebar-header">

@@ -58,7 +58,7 @@ $players = $response["items"] ?? [];
             <?php endif; ?>
         </ul>
     </nav>
-
+<br><br><br>
 <div class="leaderboard-container">
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h2>
