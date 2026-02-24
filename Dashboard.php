@@ -97,7 +97,7 @@ $playerCards = $api->getPlayerCards($gamertag);
     </nav>
 
 <main class="home-sections">
-
+<br><br><br>
     <div style="text-align: center; margin: 20px 0;">
         <select id="viewSelector" onchange="switchView(this.value)" style="padding: 10px; border-radius: 8px; background: #2c2f38; color: white; border: 1px solid #f5b700;">
             <option value="stats">Informazioni Generali</option>

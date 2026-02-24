@@ -42,6 +42,7 @@ require "config.php"; // Include DB e chiave API
 
     <!-- HERO / BENVENUTO -->
     <header class="hero">
+        <br><br><br>
         <h1>Benvenuto su Royal Tracker!</h1>
         <p>Scopri i deck più forti, partecipa alle sfide, interagisci con la community e guarda video dei migliori player.</p>
         <?php if(!isset($_SESSION["user_id"])): ?>
