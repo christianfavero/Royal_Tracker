@@ -128,6 +128,8 @@ public function getPlayerCards(string $gamertag): array {
  public function getLeaderboard($locationId, $limit = 50) {
     // Passa solo l'endpoint relativo, la funzione request() pensa al resto
     return $this->request("locations/$locationId/rankings/players?limit=$limit");
+    $response = curl_exec($ch); 
+var_dump($response); // <--- AGGIUNGI QUESTO PER IL DEBUG
 }
 
 public function getLocations() {

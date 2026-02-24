@@ -58,7 +58,7 @@
     // 1. CARICAMENTO TENDINA NAZIONI
     async function loadLocations() {
         try {
-            const res = await fetch('get_leaderboard.php?action=get_locations');
+            const res = await fetch('fetch_leaderboard.php?action=get_locations');
             const data = await res.json();
             
             select.innerHTML = '<option value="global">Global</option>';
@@ -85,8 +85,18 @@
         
         try {
             // Facciamo la richiesta HTTP al PHP
-            const res = await fetch(`get_leaderboard.php?action=rankings&location=${id}`);
-            const data = await res.json(); // Riceviamo il JSON
+           // 'id' è la variabile che contiene il codice location (es: 'global' o '57000140')
+           const res = await fetch(`fetch_leaderboard.php?action=rankings&location=${id}`);
+const data = await res.json();
+
+console.log(data); // <--- GUARDA LA CONSOLE: vedi una proprietà "items"?
+
+// Se data.items esiste, usa quello:
+const listaGiocatori = data.items || []; 
+
+if (listaGiocatori.length === 0) {
+    console.log("Array items vuoto o mancante");
+}
             
             tbody.innerHTML = ""; // Puliamo la tabella prima di stampare
             
