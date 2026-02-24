@@ -417,6 +417,12 @@ select { padding: 5px; margin: 10px; }
         }
 
         .sidebar-header { padding: 20px; border-bottom: 1px solid #444; text-align: center; }
+
+        #chat-box {
+            height: 500px; /* O una misura fissa */
+            overflow-y: auto;
+            display: block; /* NON usare flex qui, crea problemi allo scroll dinamico */
+        }
         
         .chat-list-item {
             padding: 15px;

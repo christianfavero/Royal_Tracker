@@ -33,6 +33,17 @@ $mio_nickname = $user_data["username"];
     <meta charset="UTF-8">
     <title>Royal Tracker - Social</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS PER BLOCCARE LO SCROLL */
+        #chat-box {
+            height: 400px; 
+            overflow-y: auto; 
+            padding: 15px; 
+            background: #1e2124; 
+            display: flex; 
+            flex-direction: column;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -54,7 +65,7 @@ $mio_nickname = $user_data["username"];
                 <h2 style="color: #f5b700; margin: 0;">Social</h2>
             </div>
             <div class="chat-list">
-                <div class="chat-list-item active" onclick="changeChat('GLOBAL', 'Chat Globale')">
+                <div class="chat-list-item active">
                     <strong style="color: white;">🌍 Chat Globale</strong><br>
                     <small style="color: #888;">Tutti i player</small>
                 </div>
@@ -66,8 +77,7 @@ $mio_nickname = $user_data["username"];
                 <h3 id="chat-title" style="margin: 0; color: white;">Chat Globale</h3>
             </div>
 
-            <div id="chat-window" style="height: 400px; overflow-y: auto; padding: 15px; background: #1e2124; display: flex; flex-direction: column;">
-                </div>
+            <div id="chat-box"></div>
 
             <form id="chat-form" class="input-area" style="display: flex; gap: 10px; padding: 15px; background: #2c2f38;">
                 <input type="hidden" id="active-chat-id" value="GLOBAL">
@@ -81,30 +91,44 @@ $mio_nickname = $user_data["username"];
     </div>
 
     <script>
-    const chatWindow = document.getElementById('chat-window');
+    let lastChatContent = ""; 
 
     function loadMessages() {
-        const idChat = document.getElementById('active-chat-id').value;
+        const chatBox = document.getElementById('chat-box');
         const myTag = document.getElementById('my-tag').value;
+        
+        // Salviamo la posizione e lo stato dello scroll
+        const currentScroll = chatBox.scrollTop;
+        const isAtBottom = chatBox.scrollHeight - chatBox.clientHeight <= chatBox.scrollTop + 50;
 
-        fetch(`get_messages.php?id_chat=${idChat}&my_tag=${encodeURIComponent(myTag)}`)
-            .then(res => res.text())
-            .then(html => {
-                chatWindow.innerHTML = html;
-                // Scroll automatico verso il basso
-                chatWindow.scrollTop = chatWindow.scrollHeight;
+        fetch('get_messages.php?id_chat=GLOBAL&my_tag=' + encodeURIComponent(myTag))
+            .then(response => response.text())
+            .then(data => {
+                if (data.trim() !== lastChatContent.trim()) {
+                    lastChatContent = data;
+                    chatBox.innerHTML = data;
+
+                    if (isAtBottom) {
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    } else {
+                        // Se l'utente sta leggendo sopra, blocca lo scroll lì dove è
+                        chatBox.scrollTop = currentScroll;
+                    }
+                }
             });
     }
+
+    // Carica subito e poi ogni 3 secondi
+    loadMessages();
+    setInterval(loadMessages, 3000);
 
     document.getElementById('chat-form').addEventListener('submit', function(e) {
         e.preventDefault();
         const textInput = document.getElementById('message-text');
-        const myTag = document.getElementById('my-tag').value;
-        const chatId = document.getElementById('active-chat-id').value;
-
+        
         const formData = new FormData();
-        formData.append('id_chat', chatId);
-        formData.append('id_user_sender', myTag);
+        formData.append('id_chat', document.getElementById('active-chat-id').value);
+        formData.append('id_user_sender', document.getElementById('my-tag').value);
         formData.append('text', textInput.value);
 
         fetch('save_chat.php', { method: 'POST', body: formData })
@@ -112,16 +136,19 @@ $mio_nickname = $user_data["username"];
         .then(data => {
             if(data.trim() === "OK") {
                 textInput.value = '';
-                loadMessages();
+                // Quando invio io, forzo il caricamento e vado in fondo
+                fetch('get_messages.php?id_chat=GLOBAL&my_tag=' + encodeURIComponent(document.getElementById('my-tag').value))
+                .then(r => r.text())
+                .then(html => {
+                    const chatBox = document.getElementById('chat-box');
+                    chatBox.innerHTML = html;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                });
             } else {
                 alert("Errore nell'invio: " + data);
             }
         });
     });
-
-    // Aggiornamento ogni 3 secondi
-    setInterval(loadMessages, 3000);
-    loadMessages();
     </script>
 </body>
 </html>

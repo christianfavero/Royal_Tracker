@@ -4,7 +4,7 @@ require "cr-api.php";
 
 $api = new ClashRoyaleAPI($clash_api_key);
 // Cerchiamo video di Clash Royale in italiano o dirette
-$videoData = $api->getYouTubeVideos("Clash Royale Italia live", 6);
+$videoData = $api->getYouTubeVideosCached("Clash Royale Italia live", 6);
 $videos = $videoData['items'] ?? [];
 ?>
 
