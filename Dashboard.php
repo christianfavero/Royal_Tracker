@@ -42,22 +42,28 @@ if ($gamertag[0] !== '#') {
 /* =========================
    CHIAMATA API
 ========================= */
+/* =========================
+   CHIAMATA API
+========================= */
 $api = new ClashRoyaleAPI($clash_api_key);
 
 $player = $api->getPlayer($gamertag);
-$battleLog = $api->getBattleLog($gamertag);
 
-if (!$player || isset($player["reason"])) {
-    $error = "Impossibile recuperare i dati del giocatore.";
+// var_dump($player); die();
+
+// Controllo robusto: se c'è un errore o non è un array valido
+if (isset($player["error"]) || isset($player["reason"]) || !isset($player["name"])) {
+    $error = "Errore API: " . ($player["message"] ?? $player["reason"] ?? "Giocatore non trovato.");
+    $player = null; // Evita che l'HTML provi a leggerlo
+} else {
+    // Solo se il giocatore esiste, procediamo con il resto
+    $battleLog = $api->getBattleLog($gamertag);
+    $lastFiveBattles = [];
+    if (!isset($battleLog["error"]) && is_array($battleLog)) {
+        $lastFiveBattles = array_slice($battleLog, 0, 5);
+    }
+    $playerCards = $api->getPlayerCards($gamertag);
 }
-
-$lastFiveBattles = [];
-if (!isset($battleLog["error"])) {
-    $lastFiveBattles = array_slice($battleLog, 0, 5);
-}
-
-$playerCards = $api->getPlayerCards($gamertag);
-
 ?>
 
 <!DOCTYPE html>
