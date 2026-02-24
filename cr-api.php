@@ -122,15 +122,13 @@ public function getPlayerCards(string $gamertag): array {
     return $cards;
 }
 
-    public function GetAllCards() : array{
-        return $this->request("cards");
-    }
-
-public function getLeaderboard($locationId, $limit = 50) {
-        return $this->request("https://api.clashroyale.com/v1/locations/$locationId/rankings/players?limit=$limit");
-    }
+ public function getLeaderboard($locationId, $limit = 50) {
+    // Passa solo l'endpoint relativo, la funzione request() pensa al resto
+    return $this->request("locations/$locationId/rankings/players?limit=$limit");
+}
 
 public function getLocations() {
-        return $this->request("https://api.clashroyale.com/v1/locations");
-    }
+    // Passa solo "locations"
+    return $this->request("locations");
+}
 }
