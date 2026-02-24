@@ -126,12 +126,11 @@ public function getPlayerCards(string $gamertag): array {
         return $this->request("cards");
     }
 
-public function getLeaderboard(string $location = "global", int $limit = 50): array {
-    $endpoint = "locations/{$location}/rankings/players?limit={$limit}";
-    return $this->request($endpoint);
-}
+public function getLeaderboard($locationId, $limit = 50) {
+        return $this->request("https://api.clashroyale.com/v1/locations/$locationId/rankings/players?limit=$limit");
+    }
 
-public function getLocations(): array {
-    return $this->request("locations");
-}
+public function getLocations() {
+        return $this->request("https://api.clashroyale.com/v1/locations");
+    }
 }
