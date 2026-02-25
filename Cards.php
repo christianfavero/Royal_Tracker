@@ -69,6 +69,7 @@ $heroImages = [
     </nav>
 
 <main class="home-sections">
+    <br><br><br><br>
 <section class="section">
     <h2 style="text-align: center; margin-bottom: 30px;">Tutte le Carte</h2>
     <div class="all-cards-grid">

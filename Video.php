@@ -48,6 +48,15 @@ $videos = $videoData['items'] ?? [];
     </style>
 </head>
 <body>
+    <nav class="navbar">
+        <div class="logo"><a href="index.php">Royal Tracker</a></div>
+        <ul class="nav-links">
+            <li><a href="index.php">Home</a></li>
+            <li><a href="Cards.php">Carte</a></li>
+            <li><a href="Leaderboard.php">Leaderboard</a></li>
+            <li><a href="challenges.php">Challenges</a></li>
+        </ul>
+    </nav>
     <main class="home-sections">
         <br><br><br>
         <h2 style="text-align:center;">Video Suggeriti & Live</h2>
