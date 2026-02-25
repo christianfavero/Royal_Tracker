@@ -39,9 +39,7 @@ if ($gamertag[0] !== '#') {
     $gamertag = '#' . $gamertag;
 }
 
-/* =========================
-   CHIAMATA API
-========================= */
+
 /* =========================
    CHIAMATA API
 ========================= */
@@ -49,7 +47,6 @@ $api = new ClashRoyaleAPI($clash_api_key);
 
 $player = $api->getPlayer($gamertag);
 
-// var_dump($player); die();
 
 // Controllo robusto: se c'è un errore o non è un array valido
 if (isset($player["error"]) || isset($player["reason"]) || !isset($player["name"])) {
@@ -64,6 +61,20 @@ if (isset($player["error"]) || isset($player["reason"]) || !isset($player["name"
     }
     $playerCards = $api->getPlayerCards($gamertag);
 }
+
+/* =========================
+   ULTIME SFIDE COMPLETATE
+========================= */
+$recent_ch_query = "SELECT c.title, uc.completed_at 
+                    FROM user_challenge uc
+                    JOIN challenges c ON uc.id_challenge = c.id_challenge
+                    WHERE uc.id_user = ? AND uc.completed = 1
+                    ORDER BY uc.completed_at DESC LIMIT 3";
+
+$stmt_recent = $conn->prepare($recent_ch_query);
+$stmt_recent->bind_param("i", $user_id);
+$stmt_recent->execute();
+$recent_challenges = $stmt_recent->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -164,6 +175,23 @@ if (isset($player["error"]) || isset($player["reason"]) || !isset($player["name"
                     <?php endforeach; ?>
                 </div>
             </section>
+
+            <section class="section">
+    <h2>Traguardi Recenti</h2><br><br>
+    <div class="recent-achievements">
+        <?php if ($recent_challenges->num_rows > 0): ?>
+            <?php while($ach = $recent_challenges->fetch_assoc()): ?>
+                <div style="background: #2c2f38; padding: 10px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #2ecc71;">
+                    <strong style="color: #fff;"><?= htmlspecialchars($ach['title']) ?></strong><br>
+                    <small style="color: #888;">Sbloccata il: <?= date("d/m/Y H:i", strtotime($ach['completed_at'])) ?></small>
+                </div>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <p style="color: #888;">Non hai ancora completato nessuna sfida. Corri nell'arena!</p>
+        <?php endif; ?>
+    </div>
+</section>
+
         </div> <div id="section-collection" style="display: none;">
             <section class="section">
                 <h2 style="text-align: center;">La tua Collezione </h2><br><br>

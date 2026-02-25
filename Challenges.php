@@ -1,50 +1,67 @@
 <?php
 session_start();
-require "config.php";
+require_once "config.php";
+require_once "cr-api.php"; 
 
 if(!isset($_SESSION["user_id"])) {
-    die("Devi essere loggato.");
+    header("Location: login.php");
+    exit();
+}
+
+/* ============================================================
+   CONNESSIONE E RECUPERO GAMERTAG (Copiato dalla Dashboard)
+   ============================================================ */
+$conn = new mysqli($host, $user, $pass, $db);
+if ($conn->connect_error) {
+    die("Errore connessione DB: " . $conn->connect_error);
 }
 
 $user_id = $_SESSION["user_id"];
 
-/* AVVIA CHALLENGE */
-if(isset($_GET['start'])) {
-    $challenge_id = intval($_GET['start']);
-
-    $check = $conn->prepare("SELECT * FROM user_challenges 
-                             WHERE user_id=? AND challenge_id=?");
-    $check->bind_param("ii", $user_id, $challenge_id);
-    $check->execute();
-    $result = $check->get_result();
-
-    if($result->num_rows == 0) {
-        $stmt = $conn->prepare("INSERT INTO user_challenge (user_id, challenge_id) VALUES (?,?)");
-        $stmt->bind_param("ii", $user_id, $challenge_id);
-        $stmt->execute();
-    }
-}
-
-/* PRENDE TUTTE LE CHALLENGE */
-$query = " SELECT c.*, uc.completed
-FROM challenges c
-LEFT JOIN user_challenge uc 
-ON c.id_challenge = uc.id_challenge AND uc.id_user = ?
-WHERE uc.completed = 0;
-";
-
-$stmt = $conn->prepare($query);
+// Recuperiamo il tag fresco dal DB invece che dalla sessione
+$stmt = $conn->prepare("SELECT player_tag FROM users WHERE id_user = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
-$challenges = $stmt->get_result();
+$result = $stmt->get_result();
+$user_data = $result->fetch_assoc();
+
+if (!$user_data || empty($user_data["player_tag"])) {
+    die("GamerTag non trovato nel database.");
+}
+
+$gamertag = strtoupper(trim($user_data["player_tag"]));
+if ($gamertag[0] !== '#') {
+    $gamertag = '#' . $gamertag;
+}
+
+/* =========================
+   CHIAMATA API
+   ========================= */
+$api = new ClashRoyaleAPI($clash_api_key);
+$player = $api->getPlayer($gamertag);
+
+// Prendiamo i dati reali
+$playerTrophies = intval($player["trophies"] ?? 0);
+$playerCardCount = isset($player["cards"]) ? count($player["cards"]) : 0;
+
+/* =========================
+   RECUPERO SFIDE
+   ========================= */
+$query = "SELECT c.*, uc.completed AS gia_fatta 
+          FROM challenges c 
+          LEFT JOIN user_challenge uc ON c.id_challenge = uc.id_challenge AND uc.id_user = ?";
+
+$stmt_ch = $conn->prepare($query);
+$stmt_ch->bind_param("i", $user_id);
+$stmt_ch->execute();
+$challenges = $stmt_ch->get_result();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Challeng</title>
+    <title>Challenges - Royal Tracker</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -52,47 +69,56 @@ $challenges = $stmt->get_result();
         <div class="logo"><a href="index.php">Royal Tracker</a></div>
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
-            <li><a href="Cards.php">Carte</a></li>
-            <li><a href="Leaderboard.php">Leaderboard</a></li>
             <li><a href="challenges.php">Challenges</a></li>
+            <li><a href="dashboard.php">Dashboard</a></li>
         </ul>
     </nav>
+
     <main class="home-section">
         <br><br><br>
-    <h2 style="text-align:center;">Scegli la tua prossima sfida</h2>
-    <h1>Challenges</h1>
+        <h2 style="text-align:center;">Le tue Sfide</h2>
+        <p style="text-align:center;">Trofei attuali: <strong><?= $playerTrophies ?></strong></p>
+        
+        <div class="challenges-container" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px;">
+            <?php while ($row = $challenges->fetch_assoc()): 
+                $isDone = ($row['gia_fatta'] == 1);
+                $type = $row['type']; 
+                $target = intval($row['target_value']);
+                $currentVal = ($type == 'coppe') ? $playerTrophies : $playerCardCount;
 
-<?php while($row = $challenges->fetch_assoc()): ?>
+                // Sincronizzazione automatica se hai raggiunto l'obiettivo
+                if (!$isDone && $target > 0 && $currentVal >= $target) {
+                   // Modifica la riga dell'INSERT aggiungendo NOW()
+$ins = $conn->prepare("INSERT INTO user_challenge (id_user, id_challenge, completed, completed_at) 
+VALUES (?, ?, 1, NOW()) 
+ON DUPLICATE KEY UPDATE completed = 1, completed_at = NOW()");
+                    $ins->bind_param("ii", $user_id, $row['id_challenge']);
+                    $ins->execute();
+                    $isDone = true;
+                }
 
-<div class="challenge-card">
+                $percent = ($target > 0) ? ($currentVal / $target) * 100 : 0;
+                if($percent > 100) $percent = 100;
+            ?>
 
-    <h2><?= $row['title'] ?></h2>
-    <p><?= $row['description'] ?></p>
+            <div class="challenge-card" style="background: white; border: 1px solid #ddd; padding: 20px; width: 300px; border-radius: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <h3><?= htmlspecialchars($row['title']) ?></h3>
+                <p style="color: #666;"><?= htmlspecialchars($row['description']) ?></p>
+                
+                <div style="background: #eee; height: 12px; border-radius: 6px; margin: 15px 0; overflow: hidden;">
+                    <div style="background: <?= $isDone ? '#2ecc71' : '#3498db' ?>; width: <?= $percent ?>%; height: 100%;"></div>
+                </div>
 
-    <?php if(is_null($row['progress'])): ?>
-        <!-- NON AVVIATA -->
-        <a href="?start=<?= $row['id'] ?>" class="btn">Avvia</a>
+                <p style="font-weight: bold;"><?= $currentVal ?> / <?= $target ?></p>
 
-    <?php elseif(!$row['completed']): ?>
-        <!-- IN CORSO -->
-        <?php
-            $percent = ($row['progress'] / $row['target']) * 100;
-            if($percent > 100) $percent = 100;
-        ?>
-
-        <div class="progress-bar">
-            <div class="progress" style="width: <?= $percent ?>%"></div>
+                <?php if ($isDone): ?>
+                    <div style="color: #27ae60; font-weight: bold; background: #eafaf1; padding: 5px; border-radius: 5px;">✅ SBLOCCATA!</div>
+                <?php else: ?>
+                    <span style="color: #888; font-style: italic;">🕒 In corso...</span>
+                <?php endif; ?>
+            </div>
+            <?php endwhile; ?>
         </div>
-        <p><?= $row['progress'] ?> / <?= $row['target'] ?></p>
-
-    <?php else: ?>
-        <!-- COMPLETATA -->
-        <p class="completed">✅ Completata!</p>
-    <?php endif; ?>
-
-</div>
-
-<?php endwhile; ?> 
-</main>
+    </main>
 </body>
 </html>
