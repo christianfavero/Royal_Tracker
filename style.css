@@ -1,4 +1,32 @@
-/* =================== RESET E FONT =================== */
+/*
+Ordine css:
+1.Reset & Variabili
+Layout globale
+Navbar
+Hero Section
+Sezioni generiche
+Login / Register
+Dashboard
+Battles
+Cards (pagina carte)
+Leaderboard
+Social / Chat
+Video
+Responsive
+/*
+
+
+/* =======================================================
+   ================ 1️⃣ RESET & VARIABILI =================
+======================================================= */
+
+:root {
+    --bg-dark: #1a1c23;
+    --panel-dark: #23262d;
+    --accent: #f5b700;
+    --text-light: #ffffff;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -12,13 +40,51 @@ body {
     min-height: 100vh;
 }
 
-/* =================== NAVBAR =================== */
+a {
+    color:#ffffff;
+    font-weight: bolder;
+}
+
+/* =======================================================
+   ================= 2️⃣ LAYOUT GENERALE =================
+======================================================= */
+
+main.home-sections, 
+.home-sections {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.home-sections-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.home-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Immagine laterale */
+.side-image {
+    width: 220px;
+    height: auto;
+    position: sticky;
+    top: 100px;
+}
+
+/* =======================================================
+   ===================== 3️⃣ NAVBAR ======================
+======================================================= */
+
 .navbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -53,7 +119,53 @@ body {
     color: #f5b700 !important;
 }
 
-/* =================== PAGINE LOGIN / REGISTER =================== */
+/* =======================================================
+   ===================== 4️⃣ HERO ========================
+======================================================= */
+
+.hero {
+    position: relative;
+    text-align: center;
+    padding: 100px 20px;
+    background: url("sfondo.webp") center/cover no-repeat;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 1;
+}
+
+.hero h1, 
+.hero p, 
+.hero-btn {
+    position: relative; 
+    z-index: 2;
+}
+
+.hero h1 {
+    color: #f5b700;
+    font-size: 42px;
+}
+
+/* =======================================================
+   ================= 5️⃣ SEZIONI GENERICHE ===============
+======================================================= */
+
+.section {
+    padding: 40px 30px;
+    background: linear-gradient(180deg, #1e3c72, #16222a);
+    border-radius: 18px;
+    border: 2px solid #f5b700;
+    margin-bottom: 30px;
+}
+
+/* =======================================================
+   ================ 6️⃣ LOGIN / REGISTER =================
+======================================================= */
+
 .auth-header {
     text-align: center;
     margin-top: 50px;
@@ -68,7 +180,8 @@ body {
     text-shadow: 0 0 15px rgba(245, 183, 0, 0.5);
 }
 
-.form-container-centered {
+.form-container-centered,
+.login-card {
     display: flex;
     justify-content: center;
     width: 100%;
@@ -86,8 +199,16 @@ body {
     box-shadow: 0 15px 35px rgba(0,0,0,0.6);
 }
 
-.auth-card h2 { color: #f5b700; margin-bottom: 10px; text-transform: uppercase; }
-.auth-card .subtitle { color: #ccc; margin-bottom: 20px; }
+.auth-card h2 { 
+    color: #f5b700; 
+    margin-bottom: 10px; 
+    text-transform: uppercase; 
+}
+
+.auth-card .subtitle { 
+    color: #ccc; 
+    margin-bottom: 20px; 
+}
 
 .auth-card input {
     width: 100%;
@@ -112,32 +233,15 @@ body {
     cursor: pointer;
 }
 
-a {
-    color:#ffffff;
-    font-weight: bolder;
-}
-
 .auth-link a { 
     color: #f5b700 !important; 
     text-decoration: none; 
 }
 
-/* =================== DASHBOARD & SEZIONI (RECUPERATI) =================== */
-main.home-sections, .home-sections {
-    max-width: 1100px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
+/* =======================================================
+   ==================== 7️⃣ DASHBOARD ====================
+======================================================= */
 
-.section {
-    padding: 40px 30px;
-    background: linear-gradient(180deg, #1e3c72, #16222a);
-    border-radius: 18px;
-    border: 2px solid #f5b700;
-    margin-bottom: 30px;
-}
-
-/* Stile specifico per le card bianche della dashboard */
 .cards-container {
     display: flex;
     gap: 15px;
@@ -146,13 +250,13 @@ main.home-sections, .home-sections {
 }
 
 .card {
-    background-color: #f5f5f5 !important; /* Il colore che volevi */
+    background-color: #f5f5f5 !important;
     padding: 20px;
     border-radius: 10px;
     flex: 1 1 150px;
     text-align: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    color: #333 !important; /* Testo scuro per leggere sopra il bianco */
+    color: #333 !important;
 }
 
 .card h3 {
@@ -167,31 +271,33 @@ main.home-sections, .home-sections {
     color: #000;
 }
 
-/* --- SEZIONE BATTAGLIE COMPATTA --- */
+/* =======================================================
+   ===================== 8️⃣ BATTLES =====================
+======================================================= */
+
 .battle-list {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Meno spazio tra le righe */
+    gap: 15px;
     margin-top: 15px;
 }
 
 .battle-row {
     background: #1c1f26;
-    padding: 12px 20px; /* Ridotto il padding interno */
+    padding: 12px 20px;
     border-radius: 12px;
-    border: 1px solid #f5b700; /* Bordo più sottile */
+    border: 1px solid #f5b700;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 4px 10px rgba(0,0,0,0.4);
 }
 
-/* Riquadro Deck più stretto */
 .player-side {
     max-width: 600px;
     width: 62%;
     background: #2c2f38;
-    padding: 10px; /* Ridotto */
+    padding: 10px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -200,11 +306,10 @@ main.home-sections, .home-sections {
     color: #f5b700;
     margin-bottom: 8px;
     text-align: center;
-    font-size: 12px; /* Testo più piccolo */
+    font-size: 12px;
     text-transform: uppercase;
 }
 
-/* Griglia Mini-Carte */
 .deck-images {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, auto));
@@ -220,12 +325,6 @@ main.home-sections, .home-sections {
     border: 3px solid #444;
 }
 
-.deck-images,
-.deck-images * {
-    max-width: none !important;
-    width: auto !important;
-}
-
 .deck-images img:hover {
     transform: scale(1.5); 
     border-color: #f5b700;
@@ -235,64 +334,32 @@ main.home-sections, .home-sections {
 .battle-vs {
     font-weight: 900;
     color: #f5b700;
-    font-size: 18px; /* VS più piccolo */
+    font-size: 18px;
     opacity: 0.8;
 }
 
-/* Fix mobile */
-@media (max-width: 768px) {
-    .battle-row { flex-direction: column; padding: 10px; }
-    .player-side { width: 100%; margin-bottom: 10px; }
-    .battle-vs { margin: 5px 0; }
-}
-/* =================== HERO =================== */
-.hero {
-    position: relative;
-    text-align: center;
-    padding: 100px 20px;
-    background: url("sfondo.webp") center/cover no-repeat;
-}
-.hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 1;
-}
-.hero h1, .hero p, .hero-btn { position: relative; z-index: 2; }
-.hero h1 { color: #f5b700; font-size: 42px; }
-
-
-/* Rimuoviamo l'effetto "espansione" del contenitore */
-.deck-images {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-}
-.player-side {
-    max-width: 400px !important; /* Stringe il riquadro del deck */
+.winner-crown {
+    width: 22px;
+    height: 22px;
+    margin-left: 6px;
+    vertical-align: middle;
 }
 
-.login-card {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding: 40px 20px;
-}
+/* =======================================================
+   ==================== 9️⃣ CARDS PAGE ===================
+======================================================= */
 
-/* CONTENITORE GRID */
 .all-cards-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 carte per riga */
-    gap: 30px; /* spazio tra le carte */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
     padding: 20px;
     max-width: 1000px;
-    margin: 0 auto; /* centra tutto */
+    margin: 0 auto;
 }
 
-/* SINGOLA CARTA */
 .card-item {
-    background-color: #2f3e6b; /* riquadro */
+    background-color: #2f3e6b;
     border-radius: 15px;
     padding: 20px;
     text-align: center;
@@ -301,20 +368,17 @@ main.home-sections, .home-sections {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Effetto hover carino */
 .card-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 25px rgba(0,0,0,0.4);
 }
 
-/* Immagine carta */
 .card-item img {
     width: 120px;
     height: auto;
     margin-bottom: 15px;
 }
 
-/* Info carta */
 .card-info h3 {
     margin: 10px 0 5px;
     color: white;
@@ -325,7 +389,6 @@ main.home-sections, .home-sections {
     font-size: 14px;
 }
 
-/* Badge elisir */
 .elixir-badge {
     position: absolute;
     top: 10px;
@@ -340,6 +403,7 @@ main.home-sections, .home-sections {
     align-items: center;
     justify-content: center;
 }
+
 .evo-label {
     position: absolute;
     top: 5px;
@@ -354,139 +418,199 @@ main.home-sections, .home-sections {
     z-index: 3;
 }
 
-@media (max-width: 900px) {
-    .all-cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.hero-label {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: linear-gradient(45deg, #ffc400, #855b00);
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid white;
+    z-index: 3;
 }
 
-@media (max-width: 600px) {
-    .all-cards-grid {
-        grid-template-columns: 1fr;
-    }
+/* =======================================================
+   =================== 🔟 LEADERBOARD ====================
+======================================================= */
+
+.leaderboard-container { 
+    max-width: 900px; 
+    margin: 30px auto; 
 }
 
-.winner-crown {
-    width: 22px;
-    height: 22px;
-    margin-left: 6px;
-    vertical-align: middle;
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
 }
 
-.leaderboard-container { max-width: 900px; margin: 30px auto; }
+th, td { 
+    padding: 10px; 
+    border: 1px solid #ddd; 
+}
 
-table { width: 100%; border-collapse: collapse; }
+th { 
+    background: #f5f5f5; 
+    text-align: left; 
+}
 
-th, td { padding: 10px; border: 1px solid #ddd; }
-
-th { background: #f5f5f5; text-align: left; }
-
-select { padding: 5px; margin: 10px; }
+select { 
+    padding: 5px; 
+    margin: 10px; 
+}
 
 .top1 { background-color: rgb(196, 166, 0); }
-
 .top2 { background-color: rgb(160, 160, 160); }
+.top3 { background-color: #c47526; }
 
-.top3 { background-color: #c47526; } 
+/* =======================================================
+   ================== 1️⃣1️⃣ SOCIAL / CHAT ===============
+======================================================= */
 
-:root {
-            --bg-dark: #1a1c23;
-            --panel-dark: #23262d;
-            --accent: #f5b700;
-            --text-light: #ffffff;
-        }
+.social-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 20px auto;
+    height: 80vh;
+    background: var(--panel-dark);
+    border-radius: 15px;
+    border: 1px solid #444;
+    overflow: hidden;
+}
 
-        .social-container {
-            display: flex;
-            max-width: 1200px;
-            margin: 20px auto;
-            height: 80vh;
-            background: var(--panel-dark);
-            border-radius: 15px;
-            border: 1px solid #444;
-            overflow: hidden;
-        }
+.chat-sidebar {
+    width: 300px;
+    background: #2c2f38;
+    border-right: 1px solid #444;
+    display: flex;
+    flex-direction: column;
+}
 
-        /* Sidebar delle conversazioni */
-        .chat-sidebar {
-            width: 300px;
-            background: #2c2f38;
-            border-right: 1px solid #444;
-            display: flex;
-            flex-direction: column;
-        }
+.sidebar-header { 
+    padding: 20px; 
+    border-bottom: 1px solid #444; 
+    text-align: center; 
+}
 
-        .sidebar-header { padding: 20px; border-bottom: 1px solid #444; text-align: center; }
+#chat-box {
+    height: 500px;
+    overflow-y: auto;
+    display: block;
+}
 
-        #chat-box {
-            height: 500px; /* O una misura fissa */
-            overflow-y: auto;
-            display: block; /* NON usare flex qui, crea problemi allo scroll dinamico */
-        }
-        
-        .chat-list-item {
-            padding: 15px;
-            border-bottom: 1px solid #383c47;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .chat-list-item:hover { background: #3d424d; }
-        .chat-list-item.active { border-left: 4px solid var(--accent); background: #3d424d; }
+.chat-list-item {
+    padding: 15px;
+    border-bottom: 1px solid #383c47;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-        /* Area Chat Principale */
-        .chat-main { flex: 1; display: flex; flex-direction: column; background: var(--bg-dark); }
-        
-        .chat-header { padding: 15px 25px; background: #2c2f38; border-bottom: 1px solid #444; }
+.chat-list-item:hover { background: #3d424d; }
+.chat-list-item.active { border-left: 4px solid var(--accent); background: #3d424d; }
 
-        #chat-window {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+.chat-main { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    background: var(--bg-dark); 
+}
 
-        /* Bolle Messaggi (Classi usate da get_messages.php) */
-        .message { max-width: 70%; padding: 12px; border-radius: 12px; position: relative; color: white; }
-        .incoming { align-self: flex-start; background: #3d424d; border-bottom-left-radius: 2px; }
-        .outgoing { align-self: flex-end; background: var(--accent); color: black; border-bottom-right-radius: 2px; }
-        
-        .message small { display: block; font-size: 0.7em; margin-bottom: 4px; font-weight: bold; }
-        .message .time { display: block; font-size: 0.6em; text-align: right; margin-top: 5px; opacity: 0.7; }
+.chat-header { 
+    padding: 15px 25px; 
+    background: #2c2f38; 
+    border-bottom: 1px solid #444; 
+}
 
-        /* Input Area */
-        .input-area { padding: 20px; background: #2c2f38; display: flex; gap: 10px; }
-        .input-area input {
-            flex: 1;
-            background: #1a1c23;
-            border: 1px solid #555;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            outline: none;
-        }
-        .input-area button {
-            background: var(--accent);
-            border: none;
-            padding: 0 25px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+#chat-window {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
 
-        .video-thumbnail-container {
+.message { 
+    max-width: 70%; 
+    padding: 12px; 
+    border-radius: 12px; 
+    position: relative; 
+    color: white; 
+}
+
+.incoming { 
+    align-self: flex-start; 
+    background: #3d424d; 
+    border-bottom-left-radius: 2px; 
+}
+
+.outgoing { 
+    align-self: flex-end; 
+    background: var(--accent); 
+    color: black; 
+    border-bottom-right-radius: 2px; 
+}
+
+.message small { 
+    display: block; 
+    font-size: 0.7em; 
+    margin-bottom: 4px; 
+    font-weight: bold; 
+}
+
+.message .time { 
+    display: block; 
+    font-size: 0.6em; 
+    text-align: right; 
+    margin-top: 5px; 
+    opacity: 0.7; 
+}
+
+.input-area { 
+    padding: 20px; 
+    background: #2c2f38; 
+    display: flex; 
+    gap: 10px; 
+}
+
+.input-area input {
+    flex: 1;
+    background: #1a1c23;
+    border: 1px solid #555;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    outline: none;
+}
+
+.input-area button {
+    background: var(--accent);
+    border: none;
+    padding: 0 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* =======================================================
+   ================== 1️⃣2️⃣ VIDEO =======================
+======================================================= */
+
+.video-thumbnail-container {
     position: relative;
     overflow: hidden;
 }
 
-/* Icona "Play" che appare al passaggio del mouse */
 .video-thumbnail-container::after {
     content: '▶';
     position: absolute;
-    top: 50%; left: 50%;
+    top: 50%; 
+    left: 50%;
     transform: translate(-50%, -50%) scale(0);
-    font-size: 50px; color: white;
+    font-size: 50px; 
+    color: white;
     transition: 0.3s;
     opacity: 0.8;
 }
@@ -495,23 +619,32 @@ select { padding: 5px; margin: 10px; }
     transform: translate(-50%, -50%) scale(1);
 }
 
-.home-sections-wrapper {
-    display: flex;
-    align-items: flex-start;
-    gap: 40px;
+/* =======================================================
+   ================== 1️⃣3️⃣ RESPONSIVE ===================
+======================================================= */
+
+@media (max-width: 900px) {
+    .all-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-/* IMMAGINE LATERALE */
-.side-image {
-    width: 220px;
-    height: auto;
-    position: sticky;
-    top: 100px;   /* distanza dall'alto quando diventa "fissa" */
+@media (max-width: 768px) {
+    .battle-row { 
+        flex-direction: column; 
+        padding: 10px; 
+    }
+    .player-side { 
+        width: 100%; 
+        margin-bottom: 10px; 
+    }
+    .battle-vs { 
+        margin: 5px 0; 
+    }
 }
 
-/* COLONNA DELLE SECTION */
-.home-sections {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
+@media (max-width: 600px) {
+    .all-cards-grid {
+        grid-template-columns: 1fr;
+    }
 }
