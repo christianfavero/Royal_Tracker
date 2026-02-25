@@ -50,7 +50,6 @@ require "config.php"; // Include DB e chiave API
         <?php endif; ?>
     </header>
 
-<<<<<<< HEAD
 
     <!-- SEZIONE HOME CARDS -->
     <main class="home-sections-wrapper">
@@ -62,22 +61,11 @@ require "config.php"; // Include DB e chiave API
             <a href="decks.php" class="btn">Vedi Decks</a>
         </section>
 
-=======
-    <!-- SEZIONE HOME CARDS -->
-    <main class="home-sections">
-        <section class="section">
-            <h2>Decks Popolari</h2>
-            <p>Consulta i deck più utilizzati e i loro win rate tramite l'API di Clash Royale.</p>
-            <a href="decks.php" class="btn">Vedi Decks</a>
-        </section>
-
->>>>>>> ec6bb70a3c99c30b8da009601a50d5ec08be6bc0
         <section class="section">
             <h2>Challenges</h2>
             <p>Partecipa alle sfide e accumula punti! Richiede accesso.</p>
             <a href="challenges.php" class="btn">Vai alle Challenges</a>
         </section>
-<<<<<<< HEAD
 
         <section class="section">
             <h2>Community</h2>
@@ -95,22 +83,6 @@ require "config.php"; // Include DB e chiave API
     
 </main>
 
-=======
-
-        <section class="section">
-            <h2>Community</h2>
-            <p>Commenti, feedback e interazione tra player. Richiede accesso.</p>
-            <a href="community.php" class="btn">Entra nella Community</a>
-        </section>
-
-        <section class="section">
-            <h2>Video & Live</h2>
-            <p>Guarda dirette e video dei canali ufficiali di Clash Royale. Richiede accesso.</p>
-            <a href="videos.php" class="btn">Guarda Video</a>
-        </section>
-    </main>
-
->>>>>>> ec6bb70a3c99c30b8da009601a50d5ec08be6bc0
     <!-- SCRIPT PER AVVISARE UTENTI NON LOGGATI -->
     <script>
         document.querySelectorAll('.requires-login').forEach(link => {
