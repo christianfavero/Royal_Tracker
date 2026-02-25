@@ -8,7 +8,6 @@ $api = new ClashRoyaleAPI($clash_api_key);
 $response = $api->GetAllCards();
 $allCards = $response['items'] ?? [];
 
-// Funzione colore in base alla rarità
 function getRarityColor($rarity) {
     switch (strtolower($rarity)) {
         case 'common': return '#5db6f3';    
@@ -20,8 +19,6 @@ function getRarityColor($rarity) {
     }
 }
 
-// Mappa delle carte Hero con immagini locali
-// Mappa Hero locale usando nomi base delle carte
 $heroImages = [
     'Knight'        => 'heroes/knight.webp',
     'Giant'         => 'heroes/giant.webp',
@@ -46,17 +43,15 @@ $heroImages = [
         <div class="logo">
             <a href="index.php">Royal Tracker</a>
         </div>
-
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <li><a href="Cards.php">Carte</a></li>
             <li><a href = "Leaderboard.php">Leaderboard</a></li>
             <li><a href="challenges.php" class="requires-login">Challenges</a></li>
             <li><a href="Social.php" class="requires-login">Community</a></li>
-            <li><a href="Video.php" class="requires-login">Video</a></li>
+            <li><a href="videos.php" class="requires-login">Video</a></li>
         
         </ul>
-
         <ul class="nav-links">
             <?php if(isset($_SESSION["user_id"])): ?>
                 <li><a href="dashboard.php">Dashboard</a></li>
@@ -77,7 +72,7 @@ $heroImages = [
     <?php foreach($allCards as $card): 
         $cardName = $card['name'] ?? '';
 
-    // Priorità immagini: Hero > Evolution > Normale
+    // Va per eroe, poi evoluzione e poi carta normale
     if (isset($heroImages[$cardName])) {
         $imageUrl = $heroImages[$cardName];
         $isHero = true;
@@ -88,22 +83,21 @@ $heroImages = [
         $imageUrl = $card['iconUrls']['medium'] ?? '';
         $isHero = false;
     }
-
-        // Colore bordo
         $borderColor = getRarityColor($card['rarity'] ?? '');
-
-        // Etichetta evoluzione
         $isEvolution = isset($card['iconUrls']['evolutionMedium']);
+        $isHero = isset($heroImages[$cardName]);
     ?>
-
         <div class="card-item" style="border-color: <?php echo $borderColor; ?>;">
-            
             <div class="elixir-badge"><?php echo $card['elixirCost'] ?? '0'; ?></div>
-
+            
             <?php if($isEvolution): ?>
                 <span class="evo-label">EVO</span>
             <?php endif; ?>
 
+            <?php if($isHero): ?>
+                <span class="hero-label">HERO</span>
+            <?php endif; ?>
+            
             <?php if ($isHero) echo '<br>'; ?>
             <img src="<?php echo $imageUrl; ?>" alt="<?php echo htmlspecialchars($cardName); ?>">
  
