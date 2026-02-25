@@ -72,21 +72,8 @@ require "config.php"; // Include DB e chiave API
                 Guardare <a href = "Video.php">video</a> di youtubers ufficiali<br>
             </p>
         </section>
-
-        <section class="section">
-            <h2>Community</h2>
-            <p>Commenti, feedback e interazione tra player. Richiede accesso.</p>
-            <a href="Social.php" class="btn">Entra nella Community</a>
-        </section>
-
-        <section class="section">
-            <h2>Video & Live</h2>
-            <p>Guarda dirette e video dei canali ufficiali di Clash Royale. Richiede accesso.</p>
-            <a href="Video.php" class="btn">Guarda Video</a>
-        </section>
     </div>
     <img src="ReRosso.png" alt="Immagine laterale" class="side-image">
-    
 </main>
 
     <!-- SCRIPT PER AVVISARE UTENTI NON LOGGATI -->

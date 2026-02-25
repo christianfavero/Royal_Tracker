@@ -57,6 +57,15 @@ $videos = $videoData['items'] ?? [];
             <li><a href="Cards.php">Carte</a></li>
             <li><a href="challenges.php">Challenges</a></li>
         </ul>
+        <ul class="nav-links">
+            <?php if(isset($_SESSION["user_id"])): ?>
+                <li><a href="dashboard.php">Dashboard</a></li>
+                <li><a href="logout.php">Logout</a></li>
+            <?php else: ?>
+                <li><a href="login.php">Accedi</a></li>
+                <li><a href="register.php">Registrati</a></li>
+            <?php endif; ?>
+        </ul>
     </nav>
     <main class="home-sections">
         <br><br><br>

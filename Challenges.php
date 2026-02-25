@@ -66,11 +66,22 @@ $challenges = $stmt_ch->get_result();
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo"><a href="index.php">Royal Tracker</a></div>
+        <div class="logo">
+            <img src = "Logo.png">
+        </div>
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <li><a href="challenges.php">Challenges</a></li>
             <li><a href="dashboard.php">Dashboard</a></li>
+        </ul>
+        <ul class="nav-links">
+            <?php if(isset($_SESSION["user_id"])): ?>
+                <li><a href="dashboard.php">Dashboard</a></li>
+                <li><a href="logout.php">Logout</a></li>
+            <?php else: ?>
+                <li><a href="login.php">Accedi</a></li>
+                <li><a href="register.php">Registrati</a></li>
+            <?php endif; ?>
         </ul>
     </nav>
 
