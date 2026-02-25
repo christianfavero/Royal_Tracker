@@ -7,26 +7,34 @@ $error = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $gamertag = strtoupper(trim($_POST["gamertag"]));
     $password = trim($_POST["password"]);
-    $passwordhashed = password_hash($password,PASSWORD_DEFAULT);
 
     if ($gamertag === "" || $password === "") {
         $error = "Inserisci tutti i dati";
     } else {
-        $stmt = $conn->prepare("SELECT id_user, username, player_tag FROM users WHERE player_tag = ? AND password_hash = ? ");
-        $stmt->bind_param("ss", $gamertag, $passwordhashed);
+        // 1. Cerchiamo l'utente solo per Player Tag
+        $stmt = $conn->prepare("SELECT id_user, username, player_tag, password_hash FROM users WHERE player_tag = ?");
+        $stmt->bind_param("s", $gamertag);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows === 1) {
-    $user = $result->fetch_assoc();
-    $_SESSION["user_id"] = $user["id_user"];
-    $_SESSION["username"] = $user["username"]; 
+            $user = $result->fetch_assoc();
 
-    $_SESSION["gamertag"] = $user["player_tag"]; 
-   
+        
+            if (password_verify($password, $user["password_hash"])) {
+                // LOGIN SUCCESSO
+                $_SESSION["user_id"] = $user["id_user"];
+                $_SESSION["username"] = $user["username"]; 
+                $_SESSION["gamertag"] = $user["player_tag"]; 
+
+                header("Location: index.php");
+                exit;
+            } else {
+                $error = "Password errata";
+            }
+        } else {
+            $error = "Gamer Tag non trovato";
         }
-        header("Location: index.php");
-        exit;
     }
 }
 ?>
@@ -53,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <h2>Entra nell’Arena</h2>
     <p class="subtitle">Inserisci il tuo Gamer Tag per iniziare</p>
     <?php if ($error): ?>
-        <div class="error"><?php echo $error; ?></div>
+        <div class="error"><?php echo $error; ?></div><br><br>
     <?php endif; ?>
 
     <form method="POST">
