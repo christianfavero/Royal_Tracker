@@ -16,13 +16,12 @@ require "config.php"; // Include DB e chiave API
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="logo">
-            <a href="index.php">Royal Tracker</a>
+            <img src="Logo.png">
         </div>
 
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <li><a href="Cards.php">Carte</a></li>
-            <li><a href = "Leaderboard.php">Leaderboard</a></li>
             <li><a href="Challenges.php" class="requires-login">Challenges</a></li>
             <li><a href="Social.php" class="requires-login">Community</a></li>
             <li><a href="Video.php" class="requires-login">Video</a></li>
@@ -56,15 +55,22 @@ require "config.php"; // Include DB e chiave API
     <img src="ReBlu.png" alt="Immagine laterale" class="side-image">
     <div class="home-sections">
         <section class="section">
-            <h2>Decks Popolari</h2>
-            <p>Consulta i deck più utilizzati e i loro win rate tramite l'API di Clash Royale.</p>
-            <a href="Cards.php" class="btn">Vedi Decks</a>
+            <h2>Cos'è Royale Tracker?</h2>
+            <p> <br>Royal Tracker è la piattaforma dedicata agli appassionati di Clash Royale 
+                che vogliono portare il proprio livello di gioco al gradino successivo.<br>
+                Analizza le tue statistiche, esplora le carte, confrontati con i tuoi amici 
+                e guarda video di gameplay.</p>
         </section>
 
         <section class="section">
-            <h2>Challenges</h2>
-            <p>Partecipa alle sfide e accumula punti! Richiede accesso.</p>
-            <a href="challenges.php" class="btn">Vai alle Challenges</a>
+            <h2>Cosa si può fare su Royale Tracker?</h2>
+            <p> <br>Cercare qualsiasi giocatore tramite <a href ="login.php">gamertag</a><br>
+                Parlare con altri giocatori tramite <a href = "Social.php">chat</a><br>
+                Visualizzare le <a href = "Cards.php">carte</a> con livello reale ed evoluzioni<br>
+                Analizzare <a href="Dashboard.php">battle log</a> e performance<br>
+                Partecipare alle <a href = "Challenges.php">challenges</a><br>
+                Guardare <a href = "Video.php">video</a> di youtubers ufficiali<br>
+            </p>
         </section>
 
         <section class="section">

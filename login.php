@@ -49,7 +49,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 <body class="login-page">
 <nav class="navbar">
-        <div class="logo"><a href="index.php">Royal Tracker</a></div>
+        <div class="logo">
+            <img src="Logo.png">
+        </div>
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <li><a href="decks.php">Decks</a></li>

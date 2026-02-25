@@ -49,11 +49,12 @@ $videos = $videoData['items'] ?? [];
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo"><a href="index.php">Royal Tracker</a></div>
+        <div class="logo">
+            <img src="Logo.png">
+        </div>
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <li><a href="Cards.php">Carte</a></li>
-            <li><a href="Leaderboard.php">Leaderboard</a></li>
             <li><a href="challenges.php">Challenges</a></li>
         </ul>
     </nav>
