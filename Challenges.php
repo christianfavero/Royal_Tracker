@@ -26,13 +26,11 @@ if(isset($_GET['start'])) {
 }
 
 /* PRENDE TUTTE LE CHALLENGE */
-$query = "
-SELECT c.*, 
-       uc.completed
+$query = " SELECT c.*, uc.completed
 FROM challenges c
 LEFT JOIN user_challenge uc 
-ON c.id = uc.challenge_id AND uc.user_id = ?
-WHERE c. = completed = 0;
+ON c.id_challenge = uc.id_challenge AND uc.id_user = ?
+WHERE uc.completed = 0;
 ";
 
 $stmt = $conn->prepare($query);
