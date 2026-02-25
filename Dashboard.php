@@ -89,16 +89,15 @@ $recent_challenges = $stmt_recent->get_result();
 
 <nav class="navbar">
         <div class="logo">
-            <a href="index.php">Royal Tracker</a>
+            <img src="Logo.png">
         </div>
 
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <li><a href="Cards.php">Carte</a></li>
-            <li><a href = "Leaderboard.php">Leaderboard</a></li>
             <li><a href="challenges.php" class="requires-login">Challenges</a></li>
             <li><a href="Social.php" class="requires-login">Community</a></li>
-            <li><a href="videos.php" class="requires-login">Video</a></li>
+            <li><a href="Video.php" class="requires-login">Video</a></li>
         
         </ul>
 
@@ -115,8 +114,8 @@ $recent_challenges = $stmt_recent->get_result();
 
 <main class="home-sections">
 <br><br><br>
-    <div style="text-align: center; margin: 20px 0;">
-        <select id="viewSelector" onchange="switchView(this.value)" style="padding: 10px; border-radius: 8px; background: #2c2f38; color: white; border: 1px solid #f5b700;">
+    <div class="view-selector-container">
+        <select id="viewSelector" onchange="switchView(this.value)" class="view-selector">
             <option value="stats">Informazioni Generali</option>
             <option value="collection">Collezione Carte</option>
         </select>

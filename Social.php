@@ -47,7 +47,9 @@ $mio_nickname = $user_data["username"];
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo"><a href="index.php">Royal Tracker</a></div>
+        <div class="logo">
+            <img src="Logo.png">
+        </div>
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <li><a href="Cards.php">Carte</a></li>
@@ -57,7 +59,7 @@ $mio_nickname = $user_data["username"];
         </ul>
     </nav>
 
-    <br><br><br><br>
+    <br><br><br><br><br><br><br>
 
     <div class="social-container">
         <div class="chat-sidebar">

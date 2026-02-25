@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <nav class="navbar">
         <div class="logo">
-            <a href="index.php">Royal Tracker</a>
+            <img src="Logo.png">
         </div>
 
         <ul class="nav-links">
