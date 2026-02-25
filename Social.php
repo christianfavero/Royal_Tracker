@@ -55,6 +55,7 @@ $users_stmt = $conn->query("SELECT id_user, username FROM users WHERE id_user !=
         <div class="logo"><img src="Logo.png"></div>
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
+            <li><a href="Cards.php">Carte</a></li>
             <li><a href="Leaderboard.php">Leaderboard</a></li>
             <li><a href="dashboard.php">Dashboard</a></li>
             <li><a href="logout.php">Logout</a></li>
