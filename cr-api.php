@@ -1,0 +1,168 @@
+<?php
+
+class ClashRoyaleAPI {
+
+    private string $apiKey;
+    private string $baseUrl = "https://api.clashroyale.com/v1/";
+
+    public function __construct(string $key) {
+        $this->apiKey = $key;
+    }
+
+    public function getBattleLog(string $gamertag): array {
+    // Rimuove eventuale # e riaggiunge per sicurezza con l'encode
+    $gamertag = ltrim($gamertag, '#');
+    $encodedTag = urlencode("#" . $gamertag);
+
+    return $this->request("players/" . $encodedTag . "/battlelog");
+}
+
+    private function request(string $endpoint): array {
+
+        $url = $this->baseUrl . $endpoint;
+
+        $ch = curl_init($url);
+
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => [
+                "Accept: application/json",
+                "Authorization: Bearer " . $this->apiKey
+            ]
+        ]);
+
+        $response = curl_exec($ch);
+
+        if ($response === false) {
+            return [
+                "error" => true,
+                "message" => curl_error($ch)
+            ];
+        }
+
+        curl_close($ch);
+
+        $data = json_decode($response, true);
+
+        if (!is_array($data)) {
+            return [
+                "error" => true,
+                "message" => "Risposta non valida dall'API"
+            ];
+        }
+
+        // Se l'API restituisce errore
+        if (isset($data['reason'])) {
+            return [
+                "error" => true,
+                "message" => $data['reason']
+            ];
+        }
+
+        return $data;
+    }
+
+    public function getPlayer(string $gamertag): array {
+
+        // Rimuove eventuale #
+        $gamertag = ltrim($gamertag, '#');
+
+        // URL encode obbligatorio
+        $encodedTag = urlencode("#" . $gamertag);
+
+        return $this->request("players/" . $encodedTag);
+    }
+/**
+ * Estrae la lista delle carte possedute dal giocatore con i relativi livelli.
+ */
+public function getPlayerCards(string $gamertag): array {
+    $profile = $this->getPlayer($gamertag);
+    if (isset($profile['error']) || !isset($profile['cards'])) {
+        return $profile;
+    }
+
+    $cards = $profile['cards'];
+
+    // 1. Calcoliamo i livelli e le evoluzioni per TUTTE le carte prima di fare altro
+    foreach ($cards as &$card) {
+        $offset = 0;
+        // Usiamo un approccio sicuro per la rarità
+        $rarity = isset($card['rarity']) ? strtolower($card['rarity']) : 'common';
+        
+        switch ($rarity) {
+            case 'rare': $offset = 2; break;
+            case 'epic': $offset = 5; break;
+            case 'legendary': $offset = 8; break;
+            case 'champion': $offset = 10; break;
+            default: $offset = 0;
+        }
+        
+        // Assegniamo SEMPRE il display_level per evitare il Warning
+        $card['display_level'] = ($card['level'] ?? 1) + $offset;
+
+        // Controllo Evoluzione: usiamo il campo evolutionLevel che l'API fornisce per ogni carta
+        $card['is_evo'] = isset($card['evolutionLevel']) && $card['evolutionLevel'] > 0;
+        
+        // Se è evoluta, proviamo a forzare l'immagine viola
+        if ($card['is_evo'] && isset($card['iconUrls']['evolutionMedium'])) {
+            $card['iconUrls']['medium'] = $card['iconUrls']['evolutionMedium'];
+        }
+    }
+    unset($card); // Scolleghiamo il riferimento del ciclo
+
+    // 2. Ora che TUTTE hanno il display_level, ordiniamo
+    usort($cards, function($a, $b) {
+        // Se il livello è uguale, ordina per nome
+        if ($b['display_level'] === $a['display_level']) {
+            return strcmp($a['name'] ?? '', $b['name'] ?? '');
+        }
+        return $b['display_level'] <=> $a['display_level'];
+    });
+
+    return $cards;
+}
+
+  public function GetAllCards() : array{
+        return $this->request("cards");
+    }
+ public function getLeaderboard($locationId, $limit = 50) {
+    // Passa solo l'endpoint relativo, la funzione request() pensa al resto
+    return $this->request("locations/$locationId/rankings/players?limit=$limit");
+    $response = curl_exec($ch); 
+var_dump($response); // <--- AGGIUNGI QUESTO PER IL DEBUG
+}
+
+public function getLocations() {
+    // Passa solo "locations"
+    return $this->request("locations");
+}
+
+public function getYouTubeVideosCached(string $query, int $maxResults = 6): array {
+    $cacheFile = 'youtube_cache.json';
+    $cacheTime = 6 * 3600; // 6 ore in secondi (3600s * 6)
+
+    // Controlliamo se il file esiste ed è ancora valido
+    if (file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTime)) {
+        return json_decode(file_get_contents($cacheFile), true);
+    }
+
+    // Se la cache è scaduta o non esiste, chiamiamo YouTube
+    $apiKey = "AIzaSyA1YqTcnreHsibyNVeSZj6tLXZpVVA1oUg"; 
+    $encodedQuery = urlencode($query);
+    $url = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=$maxResults&q=$encodedQuery&type=video&key=$apiKey&order=date";
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+
+    // Salviamo il risultato nel file se la risposta è valida
+    if (isset($data['items'])) {
+        file_put_contents($cacheFile, json_encode($data));
+    }
+
+    return $data;
+}
+}

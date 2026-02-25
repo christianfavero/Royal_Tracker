@@ -493,6 +493,7 @@ select { padding: 5px; margin: 10px; }
 
 .video-card:hover .video-thumbnail-container::after {
     transform: translate(-50%, -50%) scale(1);
+<<<<<<< HEAD
 }
 
 .home-sections-wrapper {
@@ -514,4 +515,6 @@ select { padding: 5px; margin: 10px; }
     display: flex;
     flex-direction: column;
     gap: 40px;
+=======
+>>>>>>> ec6bb70a3c99c30b8da009601a50d5ec08be6bc0
 }

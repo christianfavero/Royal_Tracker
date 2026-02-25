@@ -6,25 +6,24 @@ $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $gamertag = strtoupper(trim($_POST["gamertag"]));
+    $password = trim($_POST["password"]);
+    $passwordhashed = password_hash($password,PASSWORD_DEFAULT);
 
-    if ($gamertag === "") {
-        $error = "Inserisci il tuo Gamer Tag!";
+    if ($gamertag === "" || $password === "") {
+        $error = "Inserisci tutti i dati";
     } else {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE gamertag = ?");
-        $stmt->bind_param("s", $gamertag);
+        $stmt = $conn->prepare("SELECT id_user, username, player_tag FROM users WHERE player_tag = ? AND password_hash = ? ");
+        $stmt->bind_param("ss", $gamertag, $passwordhashed);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows === 1) {
-            $user = $result->fetch_assoc();
-            $_SESSION["user_id"] = $user["id_user"];
-            $_SESSION["gamertag"] = $user["gamertag"];
-        } else {
-            $insert = $conn->prepare("INSERT INTO users (gamertag) VALUES (?)");
-            $insert->bind_param("s", $gamertag);
-            $insert->execute();
-            $_SESSION["user_id"] = $insert->insert_id;
-            $_SESSION["gamertag"] = $gamertag;
+    $user = $result->fetch_assoc();
+    $_SESSION["user_id"] = $user["id_user"];
+    $_SESSION["username"] = $user["username"]; 
+
+    $_SESSION["gamertag"] = $user["player_tag"]; 
+   
         }
         header("Location: index.php");
         exit;
@@ -41,11 +40,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="login-page">
-
+<nav class="navbar">
+        <div class="logo"><a href="index.php">Royal Tracker</a></div>
+        <ul class="nav-links">
+            <li><a href="index.php">Home</a></li>
+            <li><a href="decks.php">Decks</a></li>
+        </ul>
+    </nav>
+<br><br><br><br>
 <div class="login-card">
+    <div class="auth-card"> 
     <h2>Entra nell’Arena</h2>
     <p class="subtitle">Inserisci il tuo Gamer Tag per iniziare</p>
-
     <?php if ($error): ?>
         <div class="error"><?php echo $error; ?></div>
     <?php endif; ?>
@@ -54,6 +60,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="input-group">
             <label for="gamertag"></label>
             <input type="text" id="gamertag" name="gamertag" placeholder="#ABC123" required>
+            <label for="gamertag"></label>
+          <input  type="password" id="password" name="password" placeholder="*****" required>
         </div>
         <button type="submit" class="login-btn">Entra</button>
     </form>
