@@ -23,7 +23,7 @@ require "config.php"; // Include DB e chiave API
             <li><a href="index.php">Home</a></li>
             <li><a href="Cards.php">Carte</a></li>
             <li><a href = "Leaderboard.php">Leaderboard</a></li>
-            <li><a href="challenges.php" class="requires-login">Challenges</a></li>
+            <li><a href="Challenges.php" class="requires-login">Challenges</a></li>
             <li><a href="Social.php" class="requires-login">Community</a></li>
             <li><a href="Video.php" class="requires-login">Video</a></li>
         
@@ -58,7 +58,7 @@ require "config.php"; // Include DB e chiave API
         <section class="section">
             <h2>Decks Popolari</h2>
             <p>Consulta i deck più utilizzati e i loro win rate tramite l'API di Clash Royale.</p>
-            <a href="decks.php" class="btn">Vedi Decks</a>
+            <a href="Cards.php" class="btn">Vedi Decks</a>
         </section>
 
         <section class="section">
@@ -70,13 +70,13 @@ require "config.php"; // Include DB e chiave API
         <section class="section">
             <h2>Community</h2>
             <p>Commenti, feedback e interazione tra player. Richiede accesso.</p>
-            <a href="community.php" class="btn">Entra nella Community</a>
+            <a href="Social.php" class="btn">Entra nella Community</a>
         </section>
 
         <section class="section">
             <h2>Video & Live</h2>
             <p>Guarda dirette e video dei canali ufficiali di Clash Royale. Richiede accesso.</p>
-            <a href="videos.php" class="btn">Guarda Video</a>
+            <a href="Video.php" class="btn">Guarda Video</a>
         </section>
     </div>
     <img src="ReRosso.png" alt="Immagine laterale" class="side-image">
