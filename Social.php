@@ -53,7 +53,12 @@ $mio_nickname = $user_data["username"];
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <li><a href="Cards.php">Carte</a></li>
+            <li><a href="Challenges.php" class="requires-login">Challenges</a></li>
+            <li><a href="Social.php" class="requires-login">Community</a></li>
+            <li><a href="Video.php" class="requires-login">Video</a></li>
+        
         </ul>
+
         <ul class="nav-links">
             <?php if(isset($_SESSION["user_id"])): ?>
                 <li><a href="dashboard.php">Dashboard</a></li>
