@@ -56,9 +56,15 @@ $users_stmt = $conn->query("SELECT id_user, username FROM users WHERE id_user !=
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <li><a href="Cards.php">Carte</a></li>
-            <li><a href="Leaderboard.php">Leaderboard</a></li>
-            <li><a href="dashboard.php">Dashboard</a></li>
-            <li><a href="logout.php">Logout</a></li>
+        </ul>
+        <ul class="nav-links">
+            <?php if(isset($_SESSION["user_id"])): ?>
+                <li><a href="dashboard.php">Dashboard</a></li>
+                <li><a href="logout.php">Logout</a></li>
+            <?php else: ?>
+                <li><a href="login.php">Accedi</a></li>
+                <li><a href="register.php">Registrati</a></li>
+            <?php endif; ?>
         </ul>
     </nav>
 <br><br>
