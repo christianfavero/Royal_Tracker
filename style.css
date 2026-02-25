@@ -494,3 +494,24 @@ select { padding: 5px; margin: 10px; }
 .video-card:hover .video-thumbnail-container::after {
     transform: translate(-50%, -50%) scale(1);
 }
+
+.home-sections-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+/* IMMAGINE LATERALE */
+.side-image {
+    width: 220px;
+    height: auto;
+    position: sticky;
+    top: 100px;   /* distanza dall'alto quando diventa "fissa" */
+}
+
+/* COLONNA DELLE SECTION */
+.home-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
