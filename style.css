@@ -1,21 +1,3 @@
-/*
-Ordine css:
-1.Reset & Variabili
-Layout globale
-Navbar
-Hero Section
-Sezioni generiche
-Login / Register
-Dashboard
-Battles
-Cards (pagina carte)
-Leaderboard
-Social / Chat
-Video
-Responsive
-/*
-
-
 /* =======================================================
    ================ 1️⃣ RESET & VARIABILI =================
 ======================================================= */
@@ -343,6 +325,15 @@ main.home-sections,
     height: 22px;
     margin-left: 6px;
     vertical-align: middle;
+}
+.deck-images,
+.deck-images * {
+    max-width: none !important;
+    width: auto !important;
+}
+
+.player-side {
+    max-width: 400px !important;
 }
 
 /* =======================================================
