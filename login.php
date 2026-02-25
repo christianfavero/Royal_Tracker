@@ -6,12 +6,14 @@ $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $gamertag = strtoupper(trim($_POST["gamertag"]));
+    $password = trim($_POST["password"]);
+    $passwordhashed = password_hash($password,PASSWORD_DEFAULT);
 
-    if ($gamertag === "") {
-        $error = "Inserisci il tuo Gamer Tag!";
+    if ($gamertag === "" || $password === "") {
+        $error = "Inserisci tutti i dati";
     } else {
-        $stmt = $conn->prepare("SELECT id_user, username, player_tag FROM users WHERE player_tag = ?");
-        $stmt->bind_param("s", $gamertag);
+        $stmt = $conn->prepare("SELECT id_user, username, player_tag FROM users WHERE player_tag = ? AND password_hash = ? ");
+        $stmt->bind_param("ss", $gamertag, $passwordhashed);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -22,12 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $_SESSION["gamertag"] = $user["player_tag"]; 
    
-        } else {
-            $insert = $conn->prepare("INSERT INTO users (player_tag) VALUES (?)");
-            $insert->bind_param("s", $gamertag);
-            $insert->execute();
-            $_SESSION["user_id"] = $insert->insert_id;
-            $_SESSION["gamertag"] = $gamertag;
         }
         header("Location: index.php");
         exit;
@@ -64,6 +60,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="input-group">
             <label for="gamertag"></label>
             <input type="text" id="gamertag" name="gamertag" placeholder="#ABC123" required>
+            <label for="gamertag"></label>
+          <input  type="password" id="password" name="password" placeholder="*****" required>
         </div>
         <button type="submit" class="login-btn">Entra</button>
     </form>
