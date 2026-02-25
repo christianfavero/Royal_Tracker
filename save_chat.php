@@ -1,22 +1,26 @@
 <?php
-session_start();
 require "config.php";
 
-$id_chat = $_POST['id_chat'] ?? 'GLOBAL';
-$id_user_sender = $_POST['id_user_sender'] ?? ''; // Deve ricevere il Player Tag (es. #ABC123)
-$text = trim($_POST['text'] ?? '');
+$id_chat = $_POST['id_chat']; // Sarà "GLOBAL" oppure un numero (es. "5")
+$sender_id = $_POST['id_user_sender']; // Il tuo ID/Tag
+$text = trim($_POST['text']);
 
-if (!empty($text) && !empty($id_user_sender)) {
-    // CORREZIONE: Colonna 'messaggio' e parametri tutti stringhe ('sss')
-    $stmt = $conn->prepare("INSERT INTO messages (id_chat, id_user_sender, messaggio) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $id_chat, $id_user_sender, $text);
+if (empty($text)) die("Messaggio vuoto");
 
-    if ($stmt->execute()) {
-        echo "OK";
-    } else {
-        echo "Errore SQL: " . $stmt->error;
-    }
+if ($id_chat === "GLOBAL") {
+    // Salva nella tabella globale (quella che hai già)
+    $stmt = $conn->prepare("INSERT INTO global_messages (sender_tag, message) VALUES (?, ?)");
+    $stmt->bind_param("ss", $sender_id, $text);
 } else {
-    echo "Dati mancanti";
+    // CHAT PRIVATA: id_chat è l'ID del destinatario
+    $receiver_id = intval($id_chat);
+    $stmt = $conn->prepare("INSERT INTO private_messages (sender_id, receiver_id, message) VALUES (?, ?, ?)");
+    $stmt->bind_param("iis", $sender_id, $receiver_id, $text);
+}
+
+if ($stmt->execute()) {
+    echo "OK";
+} else {
+    echo "Errore: " . $conn->error;
 }
 ?>

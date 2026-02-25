@@ -75,6 +75,24 @@ $stmt_recent = $conn->prepare($recent_ch_query);
 $stmt_recent->bind_param("i", $user_id);
 $stmt_recent->execute();
 $recent_challenges = $stmt_recent->get_result();
+
+/* ============================================================
+   CALCOLO PUNTI TOTALI DALLE SFIDE COMPLETATE
+   ============================================================ */
+   $query_punti = "SELECT SUM(c.reward_points) as totale 
+   FROM user_challenge uc
+   JOIN challenges c ON uc.id_challenge = c.id_challenge
+   WHERE uc.id_user = ? AND uc.completed = 1";
+
+$stmt_punti = $conn->prepare($query_punti);
+$stmt_punti->bind_param("i", $user_id);
+$stmt_punti->execute();
+$res_punti = $stmt_punti->get_result();
+$row_punti = $res_punti->fetch_assoc();
+
+// Se l'utente non ha ancora fatto sfide, il totale sarà 0
+$punti_totali = $row_punti['totale'] ?? 0;
+
 ?>
 
 <!DOCTYPE html>
@@ -140,7 +158,14 @@ $recent_challenges = $stmt_recent->get_result();
                     <div class="card"><h3>Vittorie</h3><p><?php echo $player["wins"]; ?></p></div>
                     <div class="card"><h3>Sconfitte</h3><p><?php echo $player["losses"]; ?></p></div>
                     <div class="card"><h3>Record Coppe</h3><p><?php echo $player["bestTrophies"]; ?></p></div>
-                </div>
+                </div><br>
+                <div class="card-container"> 
+    <h3 style="color: #f5b700;">Punti Royal</h3>
+    <p style="font-size: 1.8em; font-weight: bold; margin: 10px 0;">
+        <?= number_format($punti_totali, 0, ',', '.') ?> <span style="font-size: 0.5em;">PT</span>
+    </p>
+    <small style="color: #888;">Guadagnati dalle sfide</small>
+</div>
             </section>
 
             <section class="section">
