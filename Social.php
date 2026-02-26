@@ -2,7 +2,7 @@
 session_start();
 require "config.php";
 
-// 1. Controllo Login
+// Controllo Login
 if (!isset($_SESSION["user_id"])) {
     header("Location: login.php");
     exit();
@@ -10,7 +10,7 @@ if (!isset($_SESSION["user_id"])) {
 
 $user_id = $_SESSION["user_id"];
 
-// 2. Recupero dati dell'utente loggato
+// Recupero dati dell'utente loggato
 $stmt = $conn->prepare("SELECT player_tag, username FROM users WHERE id_user = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -23,7 +23,7 @@ if (!$user_data) {
 $mio_tag_reale = $user_data["player_tag"];
 $mio_nickname = $user_data["username"];
 
-// 3. Recupero lista utenti per la sidebar (escludendo me stesso)
+// Recupero lista utenti per la sidebar (escludendo me stesso)
 $users_stmt = $conn->query("SELECT id_user, username FROM users WHERE id_user != $user_id ORDER BY username ASC");
 ?>
 
@@ -33,30 +33,20 @@ $users_stmt = $conn->query("SELECT id_user, username FROM users WHERE id_user !=
     <meta charset="UTF-8">
     <title>Social - Royale Tracker</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .social-container { display: flex; height: 70vh; margin: 20px; background: #2c2f38; border-radius: 10px; overflow: hidden; }
-        .chat-sidebar { width: 30%; background: #23272a; border-right: 1px solid #444; overflow-y: auto; }
-        .chat-main { width: 70%; display: flex; flex-direction: column; }
-        
-        #chat-box { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; background: #1e2124; }
-        
-        .chat-list-item { padding: 15px; border-bottom: 1px solid #333; cursor: pointer; transition: 0.3s; }
-        .chat-list-item:hover { background: #32353b; }
-        .chat-list-item.active { background: #f5b700; }
-        .chat-list-item.active strong { color: black !important; }
-
-        .input-area { padding: 15px; background: #2c2f38; display: flex; gap: 10px; }
-        .input-area input { flex: 1; padding: 12px; border-radius: 5px; border: none; outline: none; }
-        .input-area button { background: #f5b700; color: black; border: none; padding: 0 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-    </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo"><img src="Logo.png"></div>
+        <div class="logo">
+            <img src="img/Logo.png">
+        </div>
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <li><a href="Cards.php">Carte</a></li>
+            <li><a href="Challenges.php" class="requires-login">Challenges</a></li>
+            <li><a href="Social.php" class="requires-login">Community</a></li>
+            <li><a href="Video.php" class="requires-login">Video</a></li>
         </ul>
+
         <ul class="nav-links">
             <?php if(isset($_SESSION["user_id"])): ?>
                 <li><a href="dashboard.php">Dashboard</a></li>
@@ -117,8 +107,7 @@ $users_stmt = $conn->query("SELECT id_user, username FROM users WHERE id_user !=
         
         const isAtBottom = chatBox.scrollHeight - chatBox.clientHeight <= chatBox.scrollTop + 50;
 
-        // In Social.php assicurati che questa riga sia così:
-fetch(`get_messages.php?id_chat=${activeChat}&my_tag=<?= $_SESSION['user_id'] ?>`)
+        fetch(`get_messages.php?id_chat=${activeChat}&my_tag=<?= $_SESSION['user_id'] ?>`)
             .then(res => res.text())
             .then(data => {
                 if (data.trim() !== lastChatContent.trim()) {

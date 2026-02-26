@@ -6,44 +6,37 @@ require "config.php";
 // Connessione database
 $conn = new mysqli($host, $user, $pass, $db);
 
-if ($conn->connect_error) {
+if ($conn->connect_error)
     die("Errore connessione: " . $conn->connect_error);
-}
 
 $error = "";
 $success = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     $username = trim($_POST["username"]);
     $password = trim($_POST["password"]);
     $gamertag = trim($_POST["gamertag"]);
     $email = trim($_POST["email"]);
 
-    if (empty($username) || empty($password) || empty($gamertag) || empty($email)) {
+    if (empty($username) || empty($password) || empty($gamertag) || empty($email))
         $error = "Tutti i campi sono obbligatori.";
-    } else {
-
+    else {
         // Controlla se username esiste già
         $stmt = $conn->prepare("SELECT id_user FROM users WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $stmt->store_result();
 
-        if ($stmt->num_rows > 0) {
+        if ($stmt->num_rows > 0)
             $error = "Username già esistente.";
-        } else {
-
+        else {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
             $insert = $conn->prepare("INSERT INTO users (username, password_hash, player_tag, email) VALUES (?, ?, ?, ?)");
             $insert->bind_param("ssss", $username, $hashedPassword, $gamertag, $email);
-
-            if ($insert->execute()) {
+            if ($insert->execute())
                 $success = "Registrazione completata! Puoi effettuare il login.";
-            } else {
+            else
                 $error = "Errore durante la registrazione.";
-            }
         }
     }
 }
@@ -58,10 +51,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <nav class="navbar">
         <div class="logo">
-            <img src="Logo.png">
+            <img src="img/Logo.png">
         </div>
 
         <ul class="nav-links">
@@ -71,9 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <li><a href="challenges.php" class="requires-login">Challenges</a></li>
             <li><a href="Social.php" class="requires-login">Community</a></li>
             <li><a href="videos.php" class="requires-login">Video</a></li>
-        
         </ul>
-
         <ul class="nav-links">
             <?php if(isset($_SESSION["user_id"])): ?>
                 <li><a href="dashboard.php">Dashboard</a></li>

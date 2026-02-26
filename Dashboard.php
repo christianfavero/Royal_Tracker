@@ -61,13 +61,11 @@ $stmt_recent->bind_param("i", $user_id);
 $stmt_recent->execute();
 $recent_challenges = $stmt_recent->get_result();
 
-/* ============================================================
-   CALCOLO PUNTI TOTALI DALLE SFIDE COMPLETATE
-   ============================================================ */
-   $query_punti = "SELECT SUM(c.reward_points) as totale 
-   FROM user_challenge uc
-   JOIN challenges c ON uc.id_challenge = c.id_challenge
-   WHERE uc.id_user = ? AND uc.completed = 1";
+// CALCOLO PUNTI TOTALI DALLE SFIDE COMPLETATE
+$query_punti = "SELECT SUM(c.reward_points) as totale 
+                FROM user_challenge uc
+                JOIN challenges c ON uc.id_challenge = c.id_challenge
+                WHERE uc.id_user = ? AND uc.completed = 1";
 
 $stmt_punti = $conn->prepare($query_punti);
 $stmt_punti->bind_param("i", $user_id);
@@ -92,7 +90,7 @@ $punti_totali = $row_punti['totale'] ?? 0;
 
 <nav class="navbar">
         <div class="logo">
-            <img src="Logo.png">
+            <img src="img/Logo.png">
         </div>
 
         <ul class="nav-links">
@@ -163,7 +161,7 @@ $punti_totali = $row_punti['totale'] ?? 0;
                     ?>
                     <div class="battle-row">
                         <div class="player-side">
-                            <h4>Tu <?php if($myWin): ?><img src="crown.png" class="winner-crown"><?php endif; ?></h4>
+                            <h4>Tu <?php if($myWin): ?><img src="img/crown.png" class="winner-crown"><?php endif; ?></h4>
                             <div class="deck-images">
                                 <?php foreach($battle["team"][0]["cards"] as $card): ?>
                                     <img src="<?php echo $card['iconUrls']['medium']; ?>">
@@ -172,7 +170,7 @@ $punti_totali = $row_punti['totale'] ?? 0;
                         </div>
                         <div class="battle-vs"><?php echo $myCrowns . " - " . $opponentCrowns; ?></div>
                         <div class="player-side">
-                            <h4><?php echo htmlspecialchars($battle["opponent"][0]["name"]); ?> <?php if($opponentWin): ?><img src="crown.png" class="winner-crown"><?php endif; ?></h4>
+                            <h4><?php echo htmlspecialchars($battle["opponent"][0]["name"]); ?> <?php if($opponentWin): ?><img src="img/crown.png" class="winner-crown"><?php endif; ?></h4>
                             <div class="deck-images">
                                 <?php foreach($battle["opponent"][0]["cards"] as $card): ?>
                                     <img src="<?php echo $card['iconUrls']['medium']; ?>">

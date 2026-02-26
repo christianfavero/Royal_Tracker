@@ -1,6 +1,20 @@
-/* =======================================================
-   ================ 1️⃣ RESET & VARIABILI =================
-======================================================= */
+/*
+1. Reset e Variabili
+2. Layout Generale
+3. Navbar
+4. Hero
+5. Sezioni generiche
+6. Login/Register
+7. Dashboard
+8. Battles
+9. Cards
+10. Social
+11. Responsive
+12. Challenge
+*/
+
+
+/* RESET & VARIABILI */
 
 :root {
     --bg-dark: #1a1c23;
@@ -17,21 +31,19 @@
 }
 
 body {
-    background: #0f1923; 
+    background: #0f1923;
     color: #ffffff;
     min-height: 100vh;
 }
 
 a {
-    color:#ffffff;
+    color: #ffffff;
     font-weight: bolder;
 }
 
-/* =======================================================
-   ================= 2️⃣ LAYOUT GENERALE =================
-======================================================= */
+/* LAYOUT GENERALE */
 
-main.home-sections, 
+main.home-sections,
 .home-sections {
     max-width: 1100px;
     margin: 40px auto;
@@ -50,7 +62,6 @@ main.home-sections,
     gap: 40px;
 }
 
-/* Immagine laterale */
 .side-image {
     width: 220px;
     height: auto;
@@ -58,9 +69,7 @@ main.home-sections,
     top: 100px;
 }
 
-/* =======================================================
-   ===================== 3️⃣ NAVBAR ======================
-======================================================= */
+/* NAVBAR */
 
 .navbar {
     position: fixed;
@@ -73,7 +82,7 @@ main.home-sections,
     padding: 18px 40px;
     background: linear-gradient(180deg, #1e3c72, #0f2027);
     border-bottom: 3px solid #f5b700;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
     z-index: 1000;
 }
 
@@ -100,29 +109,27 @@ main.home-sections,
     color: #f5b700 !important;
 }
 
-/* =======================================================
-   ===================== 4️⃣ HERO ========================
-======================================================= */
+/* HERO */
 
 .hero {
     position: relative;
     text-align: center;
     padding: 100px 20px;
-    background: url("sfondo.webp") center/cover no-repeat;
+    background: url("img/sfondo.webp") center/cover no-repeat;
 }
 
 .hero::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
     z-index: 1;
 }
 
-.hero h1, 
-.hero p, 
+.hero h1,
+.hero p,
 .hero-btn {
-    position: relative; 
+    position: relative;
     z-index: 2;
 }
 
@@ -131,9 +138,7 @@ main.home-sections,
     font-size: 42px;
 }
 
-/* =======================================================
-   ================= 5️⃣ SEZIONI GENERICHE ===============
-======================================================= */
+/* SEZIONI GENERICHE */
 
 .section {
     padding: 40px 30px;
@@ -143,9 +148,7 @@ main.home-sections,
     margin-bottom: 30px;
 }
 
-/* =======================================================
-   ================ 6️⃣ LOGIN / REGISTER =================
-======================================================= */
+/* LOGIN / REGISTER */
 
 .auth-header {
     text-align: center;
@@ -177,18 +180,18 @@ main.home-sections,
     width: 100%;
     max-width: 400px;
     text-align: center;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
 }
 
-.auth-card h2 { 
-    color: #f5b700; 
-    margin-bottom: 10px; 
-    text-transform: uppercase; 
+.auth-card h2 {
+    color: #f5b700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
 }
 
-.auth-card .subtitle { 
-    color: #ccc; 
-    margin-bottom: 20px; 
+.auth-card .subtitle {
+    color: #ccc;
+    margin-bottom: 20px;
 }
 
 .auth-card input {
@@ -214,14 +217,12 @@ main.home-sections,
     cursor: pointer;
 }
 
-.auth-link a { 
-    color: #f5b700 !important; 
-    text-decoration: none; 
+.auth-link a {
+    color: #f5b700 !important;
+    text-decoration: none;
 }
 
-/* =======================================================
-   ==================== 7️⃣ DASHBOARD ====================
-======================================================= */
+/* DASHBOARD */
 
 .cards-container {
     display: flex;
@@ -236,7 +237,7 @@ main.home-sections,
     border-radius: 10px;
     flex: 1 1 150px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     color: #333 !important;
 }
 
@@ -252,9 +253,36 @@ main.home-sections,
     color: #000;
 }
 
-/* =======================================================
-   ===================== 8️⃣ BATTLES =====================
-======================================================= */
+.card-item {
+    position: relative;
+    text-align: center;
+    background: #2c2f38;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.cardEvo {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff00ff;
+    color: white;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+    z-index: 10;
+    box-shadow: 0 2px 5px black;
+}
+
+.card-level {
+    color: #f5b700;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* BATTLES */
 
 .battle-list {
     display: flex;
@@ -271,7 +299,7 @@ main.home-sections,
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .player-side {
@@ -307,7 +335,7 @@ main.home-sections,
 }
 
 .deck-images img:hover {
-    transform: scale(1.5); 
+    transform: scale(1.5);
     border-color: #f5b700;
     z-index: 5;
 }
@@ -325,6 +353,7 @@ main.home-sections,
     margin-left: 6px;
     vertical-align: middle;
 }
+
 .deck-images,
 .deck-images * {
     max-width: none !important;
@@ -335,14 +364,12 @@ main.home-sections,
     max-width: 400px !important;
 }
 
-/* Container */
 .view-selector-container {
     display: flex;
     justify-content: center;
     margin: 30px 0;
 }
 
-/* Select principale */
 .view-selector {
     padding: 12px 20px;
     font-size: 16px;
@@ -358,28 +385,23 @@ main.home-sections,
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
-/* Hover */
 .view-selector:hover {
     border-color: #ffd84d;
     box-shadow: 0 0 12px rgba(245, 183, 0, 0.6);
     transform: translateY(-2px);
 }
 
-/* Focus */
 .view-selector:focus {
     border-color: #ffcc00;
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
 }
 
-/* Option styling (limitato dai browser ma utile) */
 .view-selector option {
     background: #2c2f38;
     color: #ffffff;
 }
 
-/* =======================================================
-   ==================== 9️⃣ CARDS PAGE ===================
-======================================================= */
+/* CARDS */
 
 .all-cards-grid {
     display: grid;
@@ -396,13 +418,13 @@ main.home-sections,
     padding: 20px;
     text-align: center;
     position: relative;
-    box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
 }
 
 .card-item img {
@@ -464,143 +486,106 @@ main.home-sections,
     z-index: 3;
 }
 
-/* =======================================================
-   =================== 🔟 LEADERBOARD ====================
-======================================================= */
-
-.leaderboard-container { 
-    max-width: 900px; 
-    margin: 30px auto; 
-}
-
-table { 
-    width: 100%; 
-    border-collapse: collapse; 
-}
-
-th, td { 
-    padding: 10px; 
-    border: 1px solid #ddd; 
-}
-
-th { 
-    background: #f5f5f5; 
-    text-align: left; 
-}
-
-select { 
-    padding: 5px; 
-    margin: 10px; 
-}
-
-.top1 { background-color: rgb(196, 166, 0); }
-.top2 { background-color: rgb(160, 160, 160); }
-.top3 { background-color: #c47526; }
-
-/* =======================================================
-   ================== 1️⃣1️⃣ SOCIAL / CHAT ===============
-======================================================= */
+/*  SOCIAL / CHAT */
 
 .social-container {
     display: flex;
-    max-width: 1200px;
-    margin: 20px auto;
-    height: 80vh;
-    background: var(--panel-dark);
-    border-radius: 15px;
-    border: 1px solid #444;
-    overflow: hidden;
-}
-
-/* Contenitore generico della bolla */
-.message-bubble {
-    padding: 10px 15px;
-    margin: 8px;
-    border-radius: 15px;
-    max-width: 75%;
-    position: relative;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    display: flex;
-    flex-direction: column;
-}
-
-/* Messaggio inviato da me (Giallo Royal) */
-.message-sent {
-    align-self: flex-end;
-    background: #f5b700;
-    color: #000;
-    border-bottom-right-radius: 2px;
-}
-
-/* Messaggio ricevuto (Grigio Scuro) */
-.message-received {
-    align-self: flex-start;
+    height: 70vh;
+    margin: 20px;
     background: #2c2f38;
-    color: #fff;
-    border-bottom-left-radius: 2px;
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 1200px;
+    border-radius: 15px;
     border: 1px solid #444;
-}
-
-.message-user {
-    font-size: 0.75rem;
-    font-weight: bold;
-    margin-bottom: 4px;
-    opacity: 0.8;
-}
-
-.message-text {
-    word-wrap: break-word;
-    font-size: 0.95rem;
-}
-
-.message-time {
-    font-size: 0.65rem;
-    text-align: right;
-    margin-top: 5px;
-    opacity: 0.6;
 }
 
 .chat-sidebar {
-    width: 300px;
-    background: #2c2f38;
+    width: 30%;
+    background: #23272a;
     border-right: 1px solid #444;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
 }
 
-.sidebar-header { 
-    padding: 20px; 
-    border-bottom: 1px solid #444; 
-    text-align: center; 
+.chat-main {
+    flex: 1;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-dark);
 }
 
 #chat-box {
-    height: 500px;
+    height: 400px;
+    flex: 1;
     overflow-y: auto;
-    display: block;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background: #1e2124;
 }
 
 .chat-list-item {
     padding: 15px;
-    border-bottom: 1px solid #383c47;
+    border-bottom: 1px solid #333;
     cursor: pointer;
     transition: 0.3s;
 }
 
-.chat-list-item:hover { background: #3d424d; }
-.chat-list-item.active { border-left: 4px solid var(--accent); background: #3d424d; }
-
-.chat-main { 
-    flex: 1; 
-    display: flex; 
-    flex-direction: column; 
-    background: var(--bg-dark); 
+.chat-list-item:hover {
+    background: #32353b;
 }
 
-.chat-header { 
-    padding: 15px 25px; 
-    background: #2c2f38; 
-    border-bottom: 1px solid #444; 
+.chat-list-item.active {
+    background: #f5b700;
+    border-left: 4px solid var(--accent);
+}
+
+.chat-list-item.active strong {
+    color: black !important;
+}
+
+.input-area {
+    padding: 15px;
+    background: #2c2f38;
+    display: flex;
+    gap: 10px;
+}
+
+.input-area input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background: #1a1c23;
+    border: 1px solid #555;
+    color: white;
+}
+
+.input-area button {
+    background: #f5b700;
+    color: black;
+    border: none;
+    padding: 0 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid #444;
+    text-align: center;
+}
+
+
+.chat-header {
+    padding: 15px 25px;
+    background: #2c2f38;
+    border-bottom: 1px solid #444;
 }
 
 #chat-window {
@@ -612,71 +597,126 @@ select {
     gap: 12px;
 }
 
-.message { 
-    max-width: 70%; 
-    padding: 12px; 
-    border-radius: 12px; 
-    position: relative; 
-    color: white; 
-}
-
-.incoming { 
-    align-self: flex-start; 
-    background: #3d424d; 
-    border-bottom-left-radius: 2px; 
-}
-
-.outgoing { 
-    align-self: flex-end; 
-    background: var(--accent); 
-    color: black; 
-    border-bottom-right-radius: 2px; 
-}
-
-.message small { 
-    display: block; 
-    font-size: 0.7em; 
-    margin-bottom: 4px; 
-    font-weight: bold; 
-}
-
-.message .time { 
-    display: block; 
-    font-size: 0.6em; 
-    text-align: right; 
-    margin-top: 5px; 
-    opacity: 0.7; 
-}
-
-.input-area { 
-    padding: 20px; 
-    background: #2c2f38; 
-    display: flex; 
-    gap: 10px; 
-}
-
-.input-area input {
-    flex: 1;
-    background: #1a1c23;
-    border: 1px solid #555;
-    color: white;
+.message {
+    max-width: 70%;
     padding: 12px;
-    border-radius: 8px;
-    outline: none;
+    border-radius: 12px;
+    position: relative;
+    color: white;
+    margin: 15px;
 }
 
-.input-area button {
+.incoming {
+    align-self: flex-start;
+    background: #3d424d;
+    border-bottom-left-radius: 2px;
+}
+
+.outgoing {
+    align-self: flex-end;
     background: var(--accent);
-    border: none;
-    padding: 0 25px;
-    border-radius: 8px;
+    color: black;
+    border-bottom-right-radius: 2px;
+}
+
+.message-text {
+    max-width: 70%;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    background: #3d424d;
+    color: white;
+}
+
+.message small {
+    display: block;
+    font-size: 0.7em;
+    margin-bottom: 4px;
     font-weight: bold;
+}
+
+.message .time {
+    display: block;
+    font-size: 0.6em;
+    text-align: right;
+    margin-top: 5px;
+    opacity: 0.7;
+}
+
+
+.social-button {
+    background: #f5b700;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* VIDEO  */
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.video-card {
+    background: #2c2f38;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s;
+    border: 1px solid #444;
+}
+
+.video-card:hover {
+    transform: scale(1.03);
+}
+
+.video-thumbnail {
+    width: 100%;
     cursor: pointer;
 }
 
-/* =======================================================
-   ================== 1️⃣2️⃣ VIDEO =======================
-======================================================= */
+.video-info {
+    padding: 15px;
+}
+
+.video-title {
+    color: #f5b700;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.video-meta {
+    color: #aaa;
+    font-size: 12px;
+}
+
+/* Modal per il video player*/
+.video-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.modal-content {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 800px;
+}
+
+
 
 .video-thumbnail-container {
     position: relative;
@@ -686,10 +726,10 @@ select {
 .video-thumbnail-container::after {
     content: '▶';
     position: absolute;
-    top: 50%; 
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
-    font-size: 50px; 
+    font-size: 50px;
     color: white;
     transition: 0.3s;
     opacity: 0.8;
@@ -699,9 +739,7 @@ select {
     transform: translate(-50%, -50%) scale(1);
 }
 
-/* =======================================================
-   ================== 1️⃣3️⃣ RESPONSIVE ===================
-======================================================= */
+/* RESPONSIVE */
 
 @media (max-width: 900px) {
     .all-cards-grid {
@@ -710,16 +748,18 @@ select {
 }
 
 @media (max-width: 768px) {
-    .battle-row { 
-        flex-direction: column; 
-        padding: 10px; 
+    .battle-row {
+        flex-direction: column;
+        padding: 10px;
     }
-    .player-side { 
-        width: 100%; 
-        margin-bottom: 10px; 
+
+    .player-side {
+        width: 100%;
+        margin-bottom: 10px;
     }
-    .battle-vs { 
-        margin: 5px 0; 
+
+    .battle-vs {
+        margin: 5px 0;
     }
 }
 
@@ -727,4 +767,36 @@ select {
     .all-cards-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/*CHALLENGE*/
+.challenge-card {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 20px;
+    width: 300px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.div-challenge {
+    background: #eee;
+    height: 12px;
+    border-radius: 6px;
+    margin: 15px 0;
+    overflow: hidden;
+}
+
+.challenge-completata {
+    color: #27ae60;
+    font-weight: bold;
+    background: #eafaf1;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.challenge-in-corso {
+    color: #888;
+    font-style: italic;
 }

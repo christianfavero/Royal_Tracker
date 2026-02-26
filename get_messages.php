@@ -2,7 +2,7 @@
 require "config.php";
 
 $id_chat = $_GET['id_chat'];
-$my_id = $_GET['my_tag']; // Questo deve essere l'ID numerico (es. $_SESSION['user_id'])
+$my_id = $_GET['my_tag'];
 
 if ($id_chat === "GLOBAL") {
     // JOIN per recuperare lo username e l'ID numerico del mittente
@@ -26,24 +26,16 @@ if ($id_chat === "GLOBAL") {
 }
 
 while ($row = $result->fetch_assoc()): 
-    /* CONTROLLO IDENTITÀ:
-       Verifichiamo se l'ID utente che ha inviato (preso dalla JOIN con 'users') 
-       corrisponde al mio ID in sessione.
-    */
+
     $sender_actual_id = $row['id_user'] ?? null; 
     $isMe = ($sender_actual_id == $my_id);
-    
-    $messageClass = $isMe ? 'message-sent' : 'message-received';
+    $class = $isMe ? "message outgoing" : "message incoming";
     $display_name = $isMe ? "Tu" : ($row['username'] ?? "Player");
-    
-    // Supporto per entrambi i nomi colonna (globale/privata)
     $testo = $row['messaggio'] ?? $row['message'];
 ?>
-    <div class="message-bubble <?= $messageClass ?>">
-        <span class="message-user"><?= htmlspecialchars($display_name) ?></span>
-        <div class="message-text">
-            <?= htmlspecialchars($testo) ?>
-        </div>
-        <span class="message-time"><?= date("H:i", strtotime($row['sent_at'])) ?></span>
+    <div class="<?= $class ?>">
+        <small><?= htmlspecialchars($display_name) ?></small>
+        <?= htmlspecialchars($testo) ?>
+        <span class="time"><?= date("H:i", strtotime($row['sent_at'])) ?></span>
     </div>
 <?php endwhile; ?>

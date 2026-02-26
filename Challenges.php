@@ -8,13 +8,9 @@ if(!isset($_SESSION["user_id"])) {
     exit();
 }
 
-/* ============================================================
-   CONNESSIONE E RECUPERO GAMERTAG (Copiato dalla Dashboard)
-   ============================================================ */
 $conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
+if ($conn->connect_error) 
     die("Errore connessione DB: " . $conn->connect_error);
-}
 
 $user_id = $_SESSION["user_id"];
 
@@ -34,9 +30,7 @@ if ($gamertag[0] !== '#') {
     $gamertag = '#' . $gamertag;
 }
 
-/* =========================
-   CHIAMATA API
-   ========================= */
+// Chiamata API
 $api = new ClashRoyaleAPI($clash_api_key);
 $player = $api->getPlayer($gamertag);
 
@@ -44,9 +38,7 @@ $player = $api->getPlayer($gamertag);
 $playerTrophies = intval($player["trophies"] ?? 0);
 $playerCardCount = isset($player["cards"]) ? count($player["cards"]) : 0;
 
-/* =========================
-   RECUPERO SFIDE
-   ========================= */
+// Recupero sfide
 $query = "SELECT c.*, uc.completed AS gia_fatta 
           FROM challenges c 
           LEFT JOIN user_challenge uc ON c.id_challenge = uc.id_challenge AND uc.id_user = ?";
@@ -67,7 +59,7 @@ $challenges = $stmt_ch->get_result();
 <body>
     <nav class="navbar">
         <div class="logo">
-            <img src = "Logo.png">
+            <img src = "img/Logo.png">
         </div>
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
@@ -103,9 +95,9 @@ $challenges = $stmt_ch->get_result();
                 // Sincronizzazione automatica se hai raggiunto l'obiettivo
                 if (!$isDone && $target > 0 && $currentVal >= $target) {
                    // Modifica la riga dell'INSERT aggiungendo NOW()
-$ins = $conn->prepare("INSERT INTO user_challenge (id_user, id_challenge, completed, completed_at) 
-VALUES (?, ?, 1, NOW()) 
-ON DUPLICATE KEY UPDATE completed = 1, completed_at = NOW()");
+                $ins = $conn->prepare("INSERT INTO user_challenge (id_user, id_challenge, completed, completed_at) 
+                    VALUES (?, ?, 1, NOW()) 
+                    ON DUPLICATE KEY UPDATE completed = 1, completed_at = NOW()");
                     $ins->bind_param("ii", $user_id, $row['id_challenge']);
                     $ins->execute();
                     $isDone = true;

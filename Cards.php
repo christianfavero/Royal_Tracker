@@ -41,7 +41,7 @@ $heroImages = [
 
 <nav class="navbar">
         <div class="logo">
-            <img src="Logo.png">
+            <img src="img/Logo.png">
         </div>
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>

@@ -14,43 +14,11 @@ $videos = $videoData['items'] ?? [];
     <meta charset="UTF-8">
     <title>Video & Live - Royal Tracker</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
-        .video-card {
-            background: #2c2f38;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s;
-            border: 1px solid #444;
-        }
-        .video-card:hover { transform: scale(1.03); }
-        .video-thumbnail { width: 100%; cursor: pointer; }
-        .video-info { padding: 15px; }
-        .video-title { color: #f5b700; font-size: 16px; margin-bottom: 10px; }
-        .video-meta { color: #aaa; font-size: 12px; }
-        
-        /* Modal per il video player */
-        .video-modal {
-            display: none; position: fixed; z-index: 1000;
-            left: 0; top: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-        }
-        .modal-content {
-            position: relative; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%; max-width: 800px;
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="logo">
-            <img src="Logo.png">
+            <img src="img/Logo.png">
         </div>
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
@@ -58,7 +26,6 @@ $videos = $videoData['items'] ?? [];
             <li><a href="Challenges.php" class="requires-login">Challenges</a></li>
             <li><a href="Social.php" class="requires-login">Community</a></li>
             <li><a href="Video.php" class="requires-login">Video</a></li>
-        
         </ul>
 
         <ul class="nav-links">

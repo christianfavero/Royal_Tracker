@@ -14,7 +14,7 @@ require "config.php"; // Include DB e chiave API
 <body>
     <nav class="navbar">
         <div class="logo">
-            <img src="Logo.png">
+            <img src="img/Logo.png">
         </div>
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
@@ -36,17 +36,17 @@ require "config.php"; // Include DB e chiave API
 
     <header class="hero">
         <br><br><br>
-        <h1>Benvenuto su Royal Tracker!</h1>
-        <p>Scopri i deck più forti, partecipa alle sfide, interagisci con la community e guarda video dei migliori player.</p>
+        <h1>Benvenuto su Royal Tracker!</h1><br>
+        <p>Scopri i deck più forti, partecipa alle sfide, interagisci con la community e guarda video dei migliori player.</p><br>
         <?php if(!isset($_SESSION["user_id"])): ?>
             <a href="register.php" class="hero-btn">Inizia ora</a>
         <?php endif; ?>
     </header>
 
     <main class="home-sections-wrapper">
-        <img src="ReBlu.png" alt="Immagine laterale" class="side-image">
+        <img src="img/ReBlu.png" alt="Immagine laterale" class="side-image">
         <div class="home-sections">
-            <section class="section">
+            <section class="section" style = "text-align: center;">
                 <h2>Cos'è Royale Tracker?</h2>
                 <p> <br>Royal Tracker è la piattaforma dedicata agli appassionati di Clash Royale 
                         che vogliono portare il proprio livello di gioco al gradino successivo.<br>
@@ -54,7 +54,7 @@ require "config.php"; // Include DB e chiave API
                         e guarda video di gameplay.</p>
             </section>
 
-            <section class="section">
+            <section class="section" style = "text-align: center;">
                 <h2>Cosa si può fare su Royale Tracker?</h2>
                 <p> <br>Cercare qualsiasi giocatore tramite <a href ="login.php">gamertag</a><br>
                         Parlare con altri giocatori tramite <a href = "Social.php">chat</a><br>
@@ -65,7 +65,7 @@ require "config.php"; // Include DB e chiave API
                 </p>
             </section>
         </div>
-        <img src="ReRosso.png" alt="Immagine laterale" class="side-image">
+        <img src="img/ReRosso.png" alt="Immagine laterale" class="side-image">
     </main>
 
     <script>

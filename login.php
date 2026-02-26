@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body class="login-page">
     <nav class="navbar">
         <div class="logo">
-            <img src="Logo.png">
+            <img src="img/Logo.png">
         </div>
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <?php endif; ?>
         </ul>
     </nav>
-    <br><br><br><br>
+    <br><br><br><br><br>
     <div class="login-card">
         <div class="auth-card"> 
         <h2>Entra nell’Arena</h2>
