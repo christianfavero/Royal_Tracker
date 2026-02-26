@@ -3,17 +3,13 @@ session_start();
 require_once "config.php";
 require_once "cr-api.php";
 
-/* =========================
-   CONTROLLO LOGIN
-========================= */
+//Controllo login
 if (!isset($_SESSION["user_id"])) {
     header("Location: login.php");
     exit();
 }
 
-/* =========================
-   CONNESSIONE DB
-========================= */
+//Connessione al DB
 $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) {
     die("Errore connessione DB: " . $conn->connect_error);
@@ -21,50 +17,39 @@ if ($conn->connect_error) {
 
 $user_id = $_SESSION["user_id"];
 
-/* =========================
-   RECUPERO GAMERTAG
-========================= */
+//Recupero gamertag
 $stmt = $conn->prepare("SELECT player_tag FROM users WHERE id_user = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
-if (!$user || empty($user["player_tag"])) {
+if (!$user || empty($user["player_tag"]))
     die("GamerTag non trovato.");
-}
 
 $gamertag = strtoupper(trim($user["player_tag"]));
-if ($gamertag[0] !== '#') {
+if ($gamertag[0] !== '#')
     $gamertag = '#' . $gamertag;
-}
 
-
-/* =========================
-   CHIAMATA API
-========================= */
+//Chiamata API
 $api = new ClashRoyaleAPI($clash_api_key);
 
 $player = $api->getPlayer($gamertag);
 
-
-// Controllo robusto: se c'è un errore o non è un array valido
+// Se c'è un errore o non è un array valido
 if (isset($player["error"]) || isset($player["reason"]) || !isset($player["name"])) {
     $error = "Errore API: " . ($player["message"] ?? $player["reason"] ?? "Giocatore non trovato.");
     $player = null; // Evita che l'HTML provi a leggerlo
 } else {
-    // Solo se il giocatore esiste, procediamo con il resto
+    // Se il giocatore esiste, allora va avanti
     $battleLog = $api->getBattleLog($gamertag);
     $lastFiveBattles = [];
-    if (!isset($battleLog["error"]) && is_array($battleLog)) {
+    if (!isset($battleLog["error"]) && is_array($battleLog))
         $lastFiveBattles = array_slice($battleLog, 0, 5);
-    }
     $playerCards = $api->getPlayerCards($gamertag);
 }
 
-/* =========================
-   ULTIME SFIDE COMPLETATE
-========================= */
+//Ultime battaglie finite
 $recent_ch_query = "SELECT c.title, uc.completed_at 
                     FROM user_challenge uc
                     JOIN challenges c ON uc.id_challenge = c.id_challenge
@@ -113,7 +98,7 @@ $recent_challenges = $stmt_recent->get_result();
     </nav>
 
 <main class="home-sections">
-<br><br><br>
+    <br><br><br>
     <div class="view-selector-container">
         <select id="viewSelector" onchange="switchView(this.value)" class="view-selector">
             <option value="stats">Informazioni Generali</option>
@@ -129,7 +114,6 @@ $recent_challenges = $stmt_recent->get_result();
     <?php else: ?>
 
         <div id="section-stats">
-            
             <section class="section">
                 <h2>Benvenuto <?php echo htmlspecialchars($player["name"]); ?></h2>
                 <p>GamerTag: <?php echo htmlspecialchars($gamertag); ?></p>
@@ -174,70 +158,56 @@ $recent_challenges = $stmt_recent->get_result();
                     <?php endforeach; ?>
                 </div>
             </section>
-
             <section class="section">
-    <h2>Traguardi Recenti</h2><br><br>
-    <div class="recent-achievements">
-        <?php if ($recent_challenges->num_rows > 0): ?>
-            <?php while($ach = $recent_challenges->fetch_assoc()): ?>
-                <div style="background: #2c2f38; padding: 10px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #2ecc71;">
-                    <strong style="color: #fff;"><?= htmlspecialchars($ach['title']) ?></strong><br>
-                    <small style="color: #888;">Sbloccata il: <?= date("d/m/Y H:i", strtotime($ach['completed_at'])) ?></small>
+                <h2>Traguardi Recenti</h2><br><br>
+                <div class="recent-achievements">
+                    <?php if ($recent_challenges->num_rows > 0): ?>
+                        <?php while($ach = $recent_challenges->fetch_assoc()): ?>
+                            <div style="background: #2c2f38; padding: 10px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #2ecc71;">
+                                <strong style="color: #fff;"><?= htmlspecialchars($ach['title']) ?></strong><br>
+                                <small style="color: #888;">Sbloccata il: <?= date("d/m/Y H:i", strtotime($ach['completed_at'])) ?></small>
+                            </div>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <p style="color: #888;">Non hai ancora completato nessuna sfida. Corri nell'arena!</p>
+                    <?php endif; ?>
                 </div>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <p style="color: #888;">Non hai ancora completato nessuna sfida. Corri nell'arena!</p>
-        <?php endif; ?>
-    </div>
-</section>
-
-        </div> <div id="section-collection" style="display: none;">
+            </section>
+        </div> 
+        <div id="section-collection" style="display: none;">
             <section class="section">
                 <h2 style="text-align: center;">La tua Collezione </h2><br><br>
                 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 15px;">
                     <?php foreach($playerCards as $card): ?>
-                     <div class="card-item" style="
-    position: relative; 
-    text-align: center; 
-    background: #2c2f38; 
-    padding: 10px; 
-    border-radius: 10px; 
-    border: <?php echo $card['is_evo'] ? '3px solid #ff00ff' : '1px solid #444'; ?>;
-    box-shadow: <?php echo $card['is_evo'] ? '0 0 15px rgba(255, 0, 255, 0.4)' : 'none'; ?>;
-">
-    
-    <?php if($card['is_evo']): ?>
-        <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #ff00ff; color: white; font-size: 11px; padding: 2px 8px; border-radius: 5px; font-weight: bold; z-index: 10; box-shadow: 0 2px 5px black;">
-            EVOLUZIONE
-        </div>
-    <?php endif; ?>
-
-    <img src="<?php echo $card['iconUrls']['medium']; ?>" style="width: 100%; border-radius: 5px;">
-    <div style="color: #f5b700; font-weight: bold; margin-top: 5px;">Liv. <?php echo $card['display_level']; ?></div>
-</div>
+                        <div class="card-item" style="border: <?php echo $card['is_evo'] ? '3px solid #ff00ff' : '1px solid #444'; ?>; box-shadow: <?php echo $card['is_evo'] ? '0 0 15px rgba(255, 0, 255, 0.4)' : 'none'; ?>;">
+                            <?php if($card['is_evo']): ?>
+                                <div class = "cardEvo">
+                                    EVOLUZIONE
+                                </div>
+                            <?php endif; ?>
+                            <img src="<?php echo $card['iconUrls']['medium']; ?>" style="width: 100%; border-radius: 5px;">
+                            <div class = "card-level">Liv. <?php echo $card['display_level']; ?></div>
+                        </div>
                     <?php endforeach; ?>
                 </div>
             </section>
         </div>
-
     <?php endif; ?>
 </main>
 
-</main>
 <script>
-function switchView(view) {
-    const statsSection = document.getElementById('section-stats');
-    const collectionSection = document.getElementById('section-collection');
-
-    if (view === 'collection') {
-        statsSection.style.display = 'none';
-        collectionSection.style.display = 'block';
-    } else {
-        statsSection.style.display = 'block';
-        collectionSection.style.display = 'none';
+    //Parte JAVASCRIPT
+    function switchView(view) {
+        const statsSection = document.getElementById('section-stats');
+        const collectionSection = document.getElementById('section-collection');
+        if (view === 'collection') {
+            statsSection.style.display = 'none';
+            collectionSection.style.display = 'block';
+        } else {
+            statsSection.style.display = 'block';
+            collectionSection.style.display = 'none';
+        }
     }
-}
 </script>
 </body>
-
 </html>

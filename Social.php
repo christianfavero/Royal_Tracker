@@ -10,19 +10,16 @@ if (!isset($_SESSION["user_id"])) {
 
 $user_id = $_SESSION["user_id"];
 
-/* =========================
-   RECUPERO DATI UTENTE
-========================= */
+//Recupero dei dati dell'utente
 $stmt = $conn->prepare("SELECT player_tag, username FROM users WHERE id_user = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $user_data = $result->fetch_assoc();
 
-if (!$user_data) {
-    die("Errore: Profilo non configurato. Assicurati di avere un Player Tag associato.");
-}
-
+if (!$user_data)
+    die("Errore: Profilo non configurato. 
+        Assicurati di avere un Player Tag associato.");
 $mio_tag_reale = $user_data["player_tag"];
 $mio_nickname = $user_data["username"];
 ?>
@@ -31,19 +28,8 @@ $mio_nickname = $user_data["username"];
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Royal Tracker - Social</title>
+    <title>Social - Royale Tracker</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* CSS PER BLOCCARE LO SCROLL */
-        #chat-box {
-            height: 400px; 
-            overflow-y: auto; 
-            padding: 15px; 
-            background: #1e2124; 
-            display: flex; 
-            flex-direction: column;
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -56,9 +42,7 @@ $mio_nickname = $user_data["username"];
             <li><a href="Challenges.php" class="requires-login">Challenges</a></li>
             <li><a href="Social.php" class="requires-login">Community</a></li>
             <li><a href="Video.php" class="requires-login">Video</a></li>
-        
         </ul>
-
         <ul class="nav-links">
             <?php if(isset($_SESSION["user_id"])): ?>
                 <li><a href="dashboard.php">Dashboard</a></li>
@@ -92,35 +76,33 @@ $mio_nickname = $user_data["username"];
 
             <div id="chat-box"></div>
 
-            <form id="chat-form" class="input-area" style="display: flex; gap: 10px; padding: 15px; background: #2c2f38;">
+            <form id="chat-form" class="input-area">
                 <input type="hidden" id="active-chat-id" value="GLOBAL">
                 <input type="hidden" id="my-tag" value="<?php echo htmlspecialchars($mio_tag_reale); ?>">
                 
                 <input type="text" id="message-text" placeholder="Scrivi come <?php echo htmlspecialchars($mio_nickname); ?>..." 
                        style="flex: 1; padding: 10px; border-radius: 5px; border: none;" autocomplete="off" required>
-                <button type="submit" style="background: #f5b700; color: black; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">INVIA</button>
+                <button type="submit" class = "social-button">INVIA</button>
             </form>
         </div>
     </div>
 
     <script>
-    let lastChatContent = ""; 
+        let lastChatContent = ""; 
 
-    function loadMessages() {
-        const chatBox = document.getElementById('chat-box');
-        const myTag = document.getElementById('my-tag').value;
-        
-        // Salviamo la posizione e lo stato dello scroll
-        const currentScroll = chatBox.scrollTop;
-        const isAtBottom = chatBox.scrollHeight - chatBox.clientHeight <= chatBox.scrollTop + 50;
+        function loadMessages() {
+            const chatBox = document.getElementById('chat-box');
+            const myTag = document.getElementById('my-tag').value;
+            // Salviamo la posizione e lo stato dello scroll
+            const currentScroll = chatBox.scrollTop;
+            const isAtBottom = chatBox.scrollHeight - chatBox.clientHeight <= chatBox.scrollTop + 50;
 
-        fetch('get_messages.php?id_chat=GLOBAL&my_tag=' + encodeURIComponent(myTag))
-            .then(response => response.text())
-            .then(data => {
+            fetch('get_messages.php?id_chat=GLOBAL&my_tag=' + encodeURIComponent(myTag))
+                .then(response => response.text())
+                .then(data => {
                 if (data.trim() !== lastChatContent.trim()) {
                     lastChatContent = data;
                     chatBox.innerHTML = data;
-
                     if (isAtBottom) {
                         chatBox.scrollTop = chatBox.scrollHeight;
                     } else {
@@ -128,8 +110,8 @@ $mio_nickname = $user_data["username"];
                         chatBox.scrollTop = currentScroll;
                     }
                 }
-            });
-    }
+            });        
+        }
 
     // Carica subito e poi ogni 3 secondi
     loadMessages();

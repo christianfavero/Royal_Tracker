@@ -11,7 +11,7 @@ $allCards = $response['items'] ?? [];
 function getRarityColor($rarity) {
     switch (strtolower($rarity)) {
         case 'common': return '#5db6f3';    
-        case 'rare': return '#ff9c44';      
+        case 'rare': return '#ff00d0';      
         case 'epic': return '#c262ff';      
         case 'legendary': return '#00d0b3'; 
         case 'champion': return '#ffbb00';  
@@ -34,7 +34,7 @@ $heroImages = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carte Clash Royale</title>
+    <title>Carte - Royale Tracker</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="login-page">
@@ -49,7 +49,6 @@ $heroImages = [
             <li><a href="challenges.php" class="requires-login">Challenges</a></li>
             <li><a href="Social.php" class="requires-login">Community</a></li>
             <li><a href="Video.php" class="requires-login">Video</a></li>
-        
         </ul>
         <ul class="nav-links">
             <?php if(isset($_SESSION["user_id"])): ?>
@@ -63,56 +62,55 @@ $heroImages = [
     </nav>
 
 <main class="home-sections">
-<br><br><br><br>
-<section class="section">
-    <h2 style="text-align: center; margin-bottom: 30px;">Tutte le Carte</h2>
-    <div class="all-cards-grid">
+    <br><br><br><br>
+    <section class="section">
+        <h2 style="text-align: center; margin-bottom: 30px;">Tutte le Carte</h2>
+        <div class="all-cards-grid">
 
-    <?php foreach($allCards as $card): 
-        $cardName = $card['name'] ?? '';
+            <?php foreach($allCards as $card): 
+                $cardName = $card['name'] ?? '';
 
-    // Va per eroe, poi evoluzione e poi carta normale
-    if (isset($heroImages[$cardName])) {
-        $imageUrl = $heroImages[$cardName];
-        $isHero = true;
-    } elseif (isset($card['iconUrls']['evolutionMedium'])) {
-        $imageUrl = $card['iconUrls']['evolutionMedium'];
-        $isHero = false;
-    } else {
-        $imageUrl = $card['iconUrls']['medium'] ?? '';
-        $isHero = false;
-    }
-        $borderColor = getRarityColor($card['rarity'] ?? '');
-        $isEvolution = isset($card['iconUrls']['evolutionMedium']);
-        $isHero = isset($heroImages[$cardName]);
-    ?>
-        <div class="card-item" style="border-color: <?php echo $borderColor; ?>;">
-            <div class="elixir-badge"><?php echo $card['elixirCost'] ?? '0'; ?></div>
+            // Va per eroe, poi evoluzione e poi carta normale
+            if (isset($heroImages[$cardName])) {
+                $imageUrl = $heroImages[$cardName];
+                $isHero = true;
+            } elseif (isset($card['iconUrls']['evolutionMedium'])) {
+                $imageUrl = $card['iconUrls']['evolutionMedium'];
+                $isHero = false;
+            } else {
+                $imageUrl = $card['iconUrls']['medium'] ?? '';
+                $isHero = false;
+            }
             
-            <?php if($isEvolution): ?>
-                <span class="evo-label">EVO</span>
-            <?php endif; ?>
-
-            <?php if($isHero): ?>
-                <span class="hero-label">HERO</span>
-            <?php endif; ?>
+                $borderColor = getRarityColor($card['rarity'] ?? '');
+                $isEvolution = isset($card['iconUrls']['evolutionMedium']);
+                $isHero = isset($heroImages[$cardName]);
+            ?>
+            <div class="card-item" style="border-color: <?php echo $borderColor; ?>;">
+                <div class="elixir-badge"><?php echo $card['elixirCost'] ?? '0'; ?></div>
             
-            <?php if ($isHero) echo '<br>'; ?>
-            <img src="<?php echo $imageUrl; ?>" alt="<?php echo htmlspecialchars($cardName); ?>">
- 
-            <div class="card-info">
-                <h3><?php echo htmlspecialchars($cardName); ?></h3>
-                <p style="color: <?php echo $borderColor; ?>; font-weight: bold; font-size: 10px;">
-                    <?php echo strtoupper($card['rarity'] ?? ''); ?>
-                </p>
+                <?php if($isEvolution): ?>
+                    <span class="evo-label">EVO</span>
+                <?php endif; ?>
+
+                <?php if($isHero): ?>
+                    <span class="hero-label">HERO</span>
+                <?php endif; ?>
+            
+                <?php if ($isHero) echo '<br>'; ?>
+
+                <img src="<?php echo $imageUrl; ?>" alt="<?php echo htmlspecialchars($cardName); ?>">
+                    
+                <div class="card-info">
+                    <h3><?php echo htmlspecialchars($cardName); ?></h3>
+                    <p style="color: <?php echo $borderColor; ?>; font-weight: bold; font-size: 10px;">
+                        <?php echo strtoupper($card['rarity'] ?? ''); ?>
+                    </p>
+                </div>
             </div>
+            <?php endforeach; ?>
         </div>
-
-    <?php endforeach; ?>
-
-    </div>
-</section>
+    </section>
 </main>
-
 </body>
 </html>

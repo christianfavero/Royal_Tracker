@@ -8,26 +8,21 @@ require "config.php"; // Include DB e chiave API
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Royal Tracker - Home</title>
+    <title>Home - Royal Tracker</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <!-- NAVBAR -->
     <nav class="navbar">
         <div class="logo">
             <img src="Logo.png">
         </div>
-
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <li><a href="Cards.php">Carte</a></li>
             <li><a href="Challenges.php" class="requires-login">Challenges</a></li>
             <li><a href="Social.php" class="requires-login">Community</a></li>
-            <li><a href="Video.php" class="requires-login">Video</a></li>
-        
+            <li><a href="Video.php" class="requires-login">Video</a></li>        
         </ul>
-
         <ul class="nav-links">
             <?php if(isset($_SESSION["user_id"])): ?>
                 <li><a href="dashboard.php">Dashboard</a></li>
@@ -39,7 +34,6 @@ require "config.php"; // Include DB e chiave API
         </ul>
     </nav>
 
-    <!-- HERO / BENVENUTO -->
     <header class="hero">
         <br><br><br>
         <h1>Benvenuto su Royal Tracker!</h1>
@@ -49,44 +43,41 @@ require "config.php"; // Include DB e chiave API
         <?php endif; ?>
     </header>
 
-
-    <!-- SEZIONE HOME CARDS -->
     <main class="home-sections-wrapper">
-    <img src="ReBlu.png" alt="Immagine laterale" class="side-image">
-    <div class="home-sections">
-        <section class="section">
-            <h2>Cos'è Royale Tracker?</h2>
-            <p> <br>Royal Tracker è la piattaforma dedicata agli appassionati di Clash Royale 
-                che vogliono portare il proprio livello di gioco al gradino successivo.<br>
-                Analizza le tue statistiche, esplora le carte, confrontati con i tuoi amici 
-                e guarda video di gameplay.</p>
-        </section>
+        <img src="ReBlu.png" alt="Immagine laterale" class="side-image">
+        <div class="home-sections">
+            <section class="section">
+                <h2>Cos'è Royale Tracker?</h2>
+                <p> <br>Royal Tracker è la piattaforma dedicata agli appassionati di Clash Royale 
+                        che vogliono portare il proprio livello di gioco al gradino successivo.<br>
+                        Analizza le tue statistiche, esplora le carte, confrontati con i tuoi amici 
+                        e guarda video di gameplay.</p>
+            </section>
 
-        <section class="section">
-            <h2>Cosa si può fare su Royale Tracker?</h2>
-            <p> <br>Cercare qualsiasi giocatore tramite <a href ="login.php">gamertag</a><br>
-                Parlare con altri giocatori tramite <a href = "Social.php">chat</a><br>
-                Visualizzare le <a href = "Cards.php">carte</a> con livello reale ed evoluzioni<br>
-                Analizzare <a href="Dashboard.php">battle log</a> e performance<br>
-                Partecipare alle <a href = "Challenges.php">challenges</a><br>
-                Guardare <a href = "Video.php">video</a> di youtubers ufficiali<br>
-            </p>
-        </section>
-    </div>
-    <img src="ReRosso.png" alt="Immagine laterale" class="side-image">
-</main>
+            <section class="section">
+                <h2>Cosa si può fare su Royale Tracker?</h2>
+                <p> <br>Cercare qualsiasi giocatore tramite <a href ="login.php">gamertag</a><br>
+                        Parlare con altri giocatori tramite <a href = "Social.php">chat</a><br>
+                        Visualizzare le <a href = "Cards.php">carte</a> con livello reale ed evoluzioni<br>
+                        Analizzare <a href="Dashboard.php">battle log</a> e performance<br>
+                        Partecipare alle <a href = "Challenges.php">challenges</a><br>
+                        Guardare <a href = "Video.php">video</a> di youtubers ufficiali<br>
+                </p>
+            </section>
+        </div>
+        <img src="ReRosso.png" alt="Immagine laterale" class="side-image">
+    </main>
 
-    <!-- SCRIPT PER AVVISARE UTENTI NON LOGGATI -->
     <script>
+        //avvisa gli utenti non loggati
         document.querySelectorAll('.requires-login').forEach(link => {
             link.addEventListener('click', function(e){
                 <?php if(!isset($_SESSION["user_id"])): ?>
-                    e.preventDefault();
-                    alert("Devi accedere per usare questa sezione!");
+                e.preventDefault();
+                alert("Devi accedere per usare questa sezione!");
                 <?php endif; ?>
             });
         });
     </script>
-
 </body>
 </html>
